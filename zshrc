@@ -33,8 +33,8 @@ if [ `uname` == 'Darwin' ]; then
 fi
 
 # vi mode
-bindkey -v
-export KEYTIMEOUT=1
+# bindkey -v
+# export KEYTIMEOUT=1
 
 # edit zsh config
 alias zshconfig="vim ~/.zshrc"
