@@ -7,7 +7,7 @@ ENABLE_CORRECTION="false"
 DISABLE_UPDATE_PROMPT=true
 
 # zsh plugins
-plugins=(git extract brew docker osx npm zsh-autosuggestions)
+plugins=(git extract brew docker osx npm zsh-autosuggestions autojump)
 source $ZSH/oh-my-zsh.sh
 
 # ys theme without user and hostname
@@ -17,18 +17,17 @@ ${hg_info}\
 ${git_info}\
  \
 %{$fg[white]%}[%*] $exit_code
-%{$terminfo[bold]$fg[red]%}$ %{$reset_color%}"
+%{$terminfo[bold]$fg[${INDI_COLOR:-red}]%}$ %{$reset_color%}"
 
 # load local info like environment variables
 source ~/.zsh/deps.sh
-source ~/.zshlocal
 
 # Custom
 source ~/.zsh/common.sh
 source ~/.zsh/docker.sh
 source ~/.zsh/gfw.sh
 
-if [ `uname` == 'Darwin' ]; then
+if [ `uname` = 'Darwin' ]; then
 	source ~/.zsh/mac.sh
 fi
 
@@ -43,4 +42,4 @@ alias zshconfig="vim ~/.zshrc"
 alias sshconfig="vim ~/.ssh/config"
 
 # refresh zsh settings
-alias ref='. ~/.zshrc'
+alias ref="[ -e ~/.zshenv ] && source ~/.zshenv; source ~/.zshrc"
