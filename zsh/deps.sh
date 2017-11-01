@@ -1,12 +1,16 @@
-# Load pyenv
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+# Lazy load pyenv
+pyenv() {
+  unset -f pyenv
+  if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+  pyenv
+}
 
-# Load the fuck
-if which thefuck > /dev/null; then eval "$(thefuck --alias)"; fi
+# Lazy load the fuck
+fuck() {
+  unset -f fuck
+  if which thefuck > /dev/null; then eval "$(thefuck --alias)"; fi
+  fuck
+}
 
-# Load nvm, this assume default install directory of nvm
-export NVM_DIR="${HOME}/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-# prefer locally installed node binaries
+# Prefer locally installed node binaries
 export PATH=node_modules/.bin:$PATH

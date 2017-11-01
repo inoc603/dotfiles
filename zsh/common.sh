@@ -22,20 +22,20 @@ alias path='echo -e ${PATH//:/\\n}'
 
 alias todo='nvim ~/.todo.md'
 
-# Kill process using certain port
+# Kill process using the given port
 # USAGE: freeport PORT
 function freeport () {
   lsof -n -i:$1 | grep LISTEN | awk '{ print $2 }' | uniq | xargs kill -9
 }
 
-# Check whether a port is in use
+# Check whether the given port is in use
 # USAGE: checkport PORT
 function checkport () {
   lsof -n -i:$1 | grep LISTEN
 }
 
 # Get IP adress on ethernet.
-function my_ip() {
+function myip() {
 	case `uname` in
 		Darwin)	interface='en0'		;;
 		*)	interface='eth0'	;;
@@ -52,7 +52,8 @@ function my_ip() {
 	echo ${MY_IP:-"Not connected"}
 }
 
-# Set local git user info to github account
+# Set local git user info to github account. You should set GITHUB_USER and
+# GITHUB_EMAIL in zshenv
 function me() {
   if [ -z ${GITHUB_USER+x} ]
   then
@@ -70,6 +71,8 @@ function me() {
   git config user.email "$GITHUB_EMAIL"
 }
 
+# clone git repos in a GOPATH-like fashion
+# USAGE: gh GIT_URL
 function gh() {
   p=$(echo $1 | sed -n 's/^https:\/\/\(.*\)\.git$/\1/p')
   if [ -z $p ]
@@ -101,6 +104,8 @@ function gu() {
   echo $host
 }
 
+# Change the commits author from one to another, across all commits
+# USAGE: fix_git_author WRONG_EMAIL CORRECT_NAME CORRECT_EMAIL
 function fix_git_author() {
   git filter-branch -f --env-filter '
   OLD_EMAIL="'$1'"

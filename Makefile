@@ -13,6 +13,7 @@ endef
 all: zsh ag ansible tmux
 
 zsh:
+	-git clone https://github.com/lukechilds/zsh-nvm ~/.oh-my-zsh/custom/plugins/zsh-nvm
 	$(call link_to_home,zsh)
 	$(call link_to_home,zshrc)
 
