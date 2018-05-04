@@ -1,7 +1,11 @@
 load_autojump() {
-	if [ `uname` = 'Darwin' ]; then
+	if [ `uname` = 'Darwin' ];
+	then
 		source_safe /usr/local/etc/profile.d/autojump.sh
+	else
+		source_safe /usr/share/autojump/autojump.zsh
 	fi
+
 }
 
 load_pyenv() {

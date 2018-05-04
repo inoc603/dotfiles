@@ -13,8 +13,16 @@ endef
 all: zsh ag ansible tmux
 
 zsh:
-	-git clone https://github.com/lukechilds/zsh-nvm ~/.oh-my-zsh/custom/plugins/zsh-nvm
+	# -git clone --recursive https://github.com/zimfw/zimfw.git ${ZDOTDIR:-${HOME}}/.zim
+	# setopt EXTENDED_GLOB
+	# for template_file in ${ZDOTDIR:-${HOME}}/.zim/templates/*; do \
+	  # user_file="${ZDOTDIR:-${HOME}}/.${template_file:t}"; \
+	  # touch ${user_file}; \
+	  # ( print -rn "$(<${template_file})$(<${user_file})" >! ${user_file} ) 2>/dev/null; \
+	# done
+	# source ${ZDOTDIR:-${HOME}}/.zlogin
 	$(call link_to_home,zsh)
+	$(call link_to_home,zimrc)
 	$(call link_to_home,zshrc)
 
 tmux:
