@@ -25,6 +25,8 @@ prompt_inoc_render() {
 	# Path
 	preprompt+=('%F{blue}%~%f')
 
+	preprompt+=('$prompt_inoc_branch')
+
 	# Start time of the command
 	preprompt+=('%F{white}%*%f')
 
@@ -47,6 +49,59 @@ prompt_inoc_render() {
 		$cleaned_ps1
 	)
 	PROMPT="${(j..)ps1}"
+}
+
+prompt_inoc_async_vcs_branch() {
+	setopt localoptions noshwordsplit
+
+	local dir=$1 untracked_dirty=$2
+
+	# use cd -q to avoid side effects of changing directory, e.g. chpwd hooks
+	builtin cd -q $dir 2>/dev/null
+
+	# configure vcs_info inside async task, this frees up vcs_info
+	# to be used or configured as the user pleases.
+	zstyle ':vcs_info:*' enable git
+	zstyle ':vcs_info:*' use-simple true
+	# only export two msg variables from vcs_info
+	zstyle ':vcs_info:*' max-exports 2
+	# export branch (%b)
+	zstyle ':vcs_info:git*' formats '%b'
+	zstyle ':vcs_info:git*' actionformats '%b|%a'
+
+	vcs_info
+
+	branch=$vcs_info_msg_0_
+
+	if [[ $untracked_dirty = 0 ]]; then
+		command git diff --no-ext-diff --quiet --exit-code
+	else
+		test -z "$(command git status --porcelain --ignore-submodules -unormal)"
+	fi
+
+	local git_color='green'
+
+	async_job prompt_inoc prompt_inoc_async_vcs_branch
+
+	print -P '%F{$git_color}$vcs_info_msg_0_%f'
+
+
+	# print -r - $vcs_info_msg_0_
+}
+
+prompt_inoc_async_callback() {
+	setopt localoptions noshwordsplit
+	local job=$1 code=$2 output=$3 exec_time=$4
+
+	print $job
+
+	case $job in
+		prompt_inoc_async_vcs_branch)
+			typeset -g prompt_inoc_branch $output
+			print $output
+			zle reset-prompt
+			;;
+	esac
 }
 
 prompt_inoc_precmd() {
@@ -104,6 +159,7 @@ prompt_inoc_setup() {
 
 	autoload -Uz add-zsh-hook
 	autoload -Uz vcs_info
+	autoload -Uz async && async
 
 	add-zsh-hook precmd prompt_inoc_precmd
 	add-zsh-hook preexec prompt_inoc_preexec
@@ -113,6 +169,9 @@ prompt_inoc_setup() {
 
 	# prompt turns red if the previous command didn't exit with 0
 	PROMPT='%(?.%F{$inoc_prompt_symbol_color}.%F{red})${INOC_PROMPT_SYMBOL:-❯}%f '
+
+	async_start_worker "prompt_inoc" -n
+	async_register_callback "prompt_inoc" prompt_inoc_async_callback
 }
 
 reset_prompt_and_accept_line() {
