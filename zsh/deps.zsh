@@ -30,7 +30,7 @@ load_nvm() {
 	fi
 }
 
-init_funcs=(load_autojump load_pyenv load_nvm)
+init_funcs=(load_pyenv load_nvm)
 init_total=${#init_funcs[*]}
 init_index=1
 
@@ -62,6 +62,9 @@ init_callback() {
 	fi
 }
 async_register_callback zsh init_callback
+
+# Make sure autojump is always loaded
+load_autojump
 
 # Delay init function triggering for 2s to make the shell starts faster.
 async_job zsh run 1 2
