@@ -447,9 +447,6 @@ prompt_pure_setup() {
 	# use different symbol for ssh session
 	[[ "$SSH_CONNECTION" != '' ]] && PURE_PROMPT_SYMBOL='$'
 
-	# show username@host if root, with username in white
-	[[ $UID -eq 0 ]] && prompt_pure_username='%F{white}%n%f%F{242}@%m%f'
-
 	# if a virtualenv is activated, display it in grey
 	PROMPT='%(12V.%F{242}%12v%f .)'
 
