@@ -6,6 +6,7 @@
 # Changes:
 # - show current time and update it before the command starts
 # - print running time for long command rather than show it in the prompt
+# - use different symbol in ssh session rather than show username and hostname
 
 # For my own and others sanity
 # git:
@@ -443,8 +444,8 @@ prompt_pure_setup() {
 	add-zsh-hook precmd prompt_pure_precmd
 	add-zsh-hook preexec prompt_pure_preexec
 
-	# show username@host if logged in through SSH
-	[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%F{242}%n@%m%f'
+	# use different symbol for ssh session
+	[[ "$SSH_CONNECTION" != '' ]] && PURE_PROMPT_SYMBOL='$'
 
 	# show username@host if root, with username in white
 	[[ $UID -eq 0 ]] && prompt_pure_username='%F{white}%n%f%F{242}@%m%f'

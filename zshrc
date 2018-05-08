@@ -5,7 +5,6 @@ export ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 export ZSH_ROOT=${HOME}/.zsh
 
 PURE_GIT_PULL=0
-PURE_PROMPT_SYMBOL=$
 
 # Some common functions for other scripts
 source ${ZSH_ROOT}/common.zsh
