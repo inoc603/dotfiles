@@ -1,0 +1,11 @@
+iterm2
+google-chrome
+docker
+shiftit
+# karabiner
+visual-studio-code
+mendeley-desktop
+mysqlworkbench
+wireshark
+# vagrant
+# virtualbox

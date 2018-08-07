@@ -1,0 +1,41 @@
+# command line tools to make life easier
+coreutils
+readline
+wget
+tree
+tig
+autojump
+htop
+pstree
+httpie
+ssh-copy-id
+
+tmux
+reattach-to-user-namespace
+
+# build tools for c/c++
+autoconf
+pkg-config
+automake
+cmake
+gcc
+
+graphviz
+
+# the terminal text editor of my choice
+neovim
+the_silver_searcher
+
+# command line json processing
+jq
+
+# pyenv
+pyenv
+pyenv-pip-migrate
+pyenv-virtualenv
+
+# mysql cli
+mysql
+
+# node version management
+nvm
