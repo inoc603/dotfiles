@@ -35,6 +35,7 @@ tmux:
 	fi;
 	$(call link_to_home,tmux)
 	$(call link_to_home,tmux.conf)
+	$(call link_to_home,tmux-osx.conf)
 	@ echo 'Install tmux plugins'
 	@ ./tmux/plugins/tpm/bin/install_plugins
 	pip install -U powerline-status
