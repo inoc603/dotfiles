@@ -40,10 +40,10 @@ dpi () {
 }
 
 # Use shadowsocks as socks5 proxy
-alias ss='ALL_PROXY=socks5://localhost:1086'
+alias ss='ALL_PROXY=socks5://localhost:1080'
 
 # Use priovxy as http proxy
-alias pp='HTTP_PROXY=localhost:8118'
+alias pp='HTTP_PROXY=http://localhost:8118 HTTPS_PROXY=http://localhost:8118'
 
 if [ `uname` = 'Darwin' ]; then
 	# Open directory/file in Finder

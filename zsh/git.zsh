@@ -2,6 +2,16 @@
 # Git
 ###############################################################################
 
+gwip() {
+	git add . -A
+	git commit -m "WIP"
+}
+
+gac() {
+	git add . -A
+	git commit -m "$@"
+}
+
 # Set local git user info to github account. You should set GITHUB_USER and
 # GITHUB_EMAIL in zshenv
 me() {
@@ -58,4 +68,10 @@ fix_git_author() {
 		export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
 	fi
 	' --tag-name-filter cat -- --branches --tags
+}
+
+remove_file() {
+	git filter-branch --force --index-filter \
+		"git rm --cached --ignore-unmatch $1" \
+	  	--prune-empty --tag-name-filter cat -- --all
 }
