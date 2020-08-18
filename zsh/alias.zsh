@@ -49,3 +49,17 @@ if [ `uname` = 'Darwin' ]; then
 	# Open directory/file in Finder
 	alias f='open -a Finder'
 fi
+
+alias ta='tmux a -t'
+
+alias t='tmux a'
+
+tn() {
+	local session=${1:-$(basename $(pwd))}
+	if [ -z "$TMUX" ]
+	then
+		tmux a -t $session || tmux new -s $session
+	else
+		tmux new -s $session -d
+	fi
+}
