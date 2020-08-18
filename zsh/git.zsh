@@ -75,3 +75,7 @@ remove_file() {
 		"git rm --cached --ignore-unmatch $1" \
 	  	--prune-empty --tag-name-filter cat -- --all
 }
+
+push_remote() {
+	git push -u origin $(git rev-parse --abbrev-ref HEAD)
+}
