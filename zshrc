@@ -32,6 +32,9 @@ zinit wait lucid for \
 		zsh-users/zsh-completions \
 	atload"!_zsh_autosuggest_start" \
 		zsh-users/zsh-autosuggestions \
+		Aloxaf/fzf-tab \
+		OMZL::git.zsh \
+		OMZP::git \
 	pick"/dev/null" \
 	atclone"lua ./z.lua --init zsh once enhanced fzf -> start.zsh" \
 	atpull"%atclone" \
@@ -40,9 +43,15 @@ zinit wait lucid for \
 		skywind3000/z.lua
 
 # use pyenv to manage python versions
-zinit ice atclone'PYENV_ROOT="$PWD" ./libexec/pyenv init - > zpyenv.zsh' \
-    atinit'export PYENV_ROOT="$PWD"' atpull"%atclone" \
-    as'command' pick'bin/pyenv' src"zpyenv.zsh" nocompile'!'
+zinit wait lucid for \
+	atclone'PYENV_ROOT="$PWD" ./libexec/pyenv init - > zpyenv.zsh' \
+	atinit'export PYENV_ROOT="$PWD"' atpull"%atclone" \
+	as'command' pick'bin/pyenv' src"zpyenv.zsh" \
+		pyenv/pyenv  \
+	atclone'PYENV_ROOT=../pyenv---pyenv ln -s $PWD $PYENV_ROOT/plugins/pyenv-virtualenv && ./bin/pyenv-virtualenv-init - > zpyenv.zsh' \
+	pick'/dev/null' src"zpyenv.zsh" \
+		pyenv/pyenv-virtualenv
+
 
 # use n to manage node versions
 export N_PREFIX=$HOME/n
