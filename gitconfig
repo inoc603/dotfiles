@@ -6,7 +6,7 @@
 	name = inoc603
 	email = inoc603@gmail.com
 [core]
-	editor = vim
+	editor = nvim
 [color]
 	ui = auto
 [color "branch"]
@@ -27,5 +27,3 @@
 	tool = vimdiff
 [difftool]
 	prompt = false
-[url "git@git.elenet.me:"]
-	insteadOf = https://git.elenet.me/
