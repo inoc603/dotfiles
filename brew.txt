@@ -4,11 +4,11 @@ readline
 wget
 tree
 tig
-autojump
 htop
 pstree
 httpie
 ssh-copy-id
+fzf
 
 tmux
 reattach-to-user-namespace
@@ -19,6 +19,8 @@ pkg-config
 automake
 cmake
 gcc
+
+lua
 
 graphviz
 
@@ -36,6 +38,3 @@ pyenv-virtualenv
 
 # mysql cli
 mysql
-
-# node version management
-nvm

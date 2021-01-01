@@ -4,7 +4,6 @@ docker
 shiftit
 # karabiner
 visual-studio-code
-mendeley-desktop
 mysqlworkbench
 wireshark
 # vagrant
