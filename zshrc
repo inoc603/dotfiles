@@ -67,7 +67,7 @@ zinit wait lucid for \
 	atinit'export PYENV_ROOT="$PWD"' atpull"%atclone" \
 	as'command' pick'bin/pyenv' src"zpyenv.zsh" \
 		pyenv/pyenv  \
-	atclone'PYENV_ROOT=../pyenv---pyenv ln -s $PWD $PYENV_ROOT/plugins/pyenv-virtualenv && ./bin/pyenv-virtualenv-init - > zpyenv.zsh' \
+	atclone'ln -s $PWD ../pyenv---pyenv/plugins/pyenv-virtualenv && ./bin/pyenv-virtualenv-init - > zpyenv.zsh' \
 	pick'/dev/null' src"zpyenv.zsh" \
 		pyenv/pyenv-virtualenv
 

@@ -52,3 +52,12 @@ ansible:
 
 brew:
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+hammerspoon: phony
+	$(call link_to_home,hammerspoon)
+
+alacritty: phony
+	$(call link_to_home,.alacritty.yml,.alacritty.yml)
+
+.PHONY: phony
+phony:

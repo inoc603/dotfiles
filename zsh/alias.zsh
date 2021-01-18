@@ -50,7 +50,7 @@ if [ `uname` = 'Darwin' ]; then
 	alias f='open -a Finder'
 fi
 
-alias ta='tmux a -t'
+alias ta='tmux a || (cd ~ && tn)'
 
 alias t='tmux a'
 
