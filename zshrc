@@ -18,9 +18,27 @@ source ${ZSH_ROOT}/docker.zsh
 # load zinit
 source ${ZSH_ROOT}/zinit.zsh
 
+#set history size
+export HISTSIZE=10000
+#save history after logout
+export SAVEHIST=10000
+#history file
+export HISTFILE=~/.zhistory
+#append into history file
+setopt INC_APPEND_HISTORY
+#save only one command if 2 common are same and consistent
+setopt HIST_IGNORE_DUPS
+#add timestamp for each entry
+setopt EXTENDED_HISTORY
+
 # use the p10k prompt
 zinit depth=1 for \
 	romkatv/powerlevel10k
+
+# case insensitive path-completion 
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 
+# partial completion suggestions
+zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suffix 
 
 # z.lua for fast navigation
 export _ZL_CMD=j # change the default command
@@ -35,6 +53,7 @@ zinit wait lucid for \
 		Aloxaf/fzf-tab \
 		OMZL::git.zsh \
 		OMZP::git \
+		OMZP::extract \
 	pick"/dev/null" \
 	atclone"lua ./z.lua --init zsh once enhanced fzf -> start.zsh" \
 	atpull"%atclone" \
@@ -51,7 +70,6 @@ zinit wait lucid for \
 	atclone'PYENV_ROOT=../pyenv---pyenv ln -s $PWD $PYENV_ROOT/plugins/pyenv-virtualenv && ./bin/pyenv-virtualenv-init - > zpyenv.zsh' \
 	pick'/dev/null' src"zpyenv.zsh" \
 		pyenv/pyenv-virtualenv
-
 
 # use n to manage node versions
 export N_PREFIX=$HOME/n
