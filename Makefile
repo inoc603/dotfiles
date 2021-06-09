@@ -36,13 +36,10 @@ tmux:
 	$(call link_to_home,tmux)
 	$(call link_to_home,tmux.conf)
 	$(call link_to_home,tmux-osx.conf)
+	$(call link_to_home,bin/tf.zsh,tf)
 	@ echo 'Install tmux plugins'
 	@ ./tmux/plugins/tpm/bin/install_plugins
 	pip install -U powerline-status
-
-bin:
-	mkdir -p ~/bin
-	ln -s `pwd`/bin/* ~/bin
 
 ag:
 	$(call link_to_home,agignore)
