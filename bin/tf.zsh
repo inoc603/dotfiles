@@ -16,7 +16,7 @@ then
 	return
 fi
 
-local session=$(basename $next)
+local session=${1:-$(basename $(dirname $next))/$(basename $next)}
 if [ -z "$TMUX" ]
 then
 	tmux a -t $session || tmux new -s $session -c $next

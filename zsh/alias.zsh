@@ -55,7 +55,7 @@ alias ta='tmux a || (cd ~ && tn)'
 alias t='tmux a'
 
 tn() {
-	local session=${1:-$(basename $(pwd))}
+	local session=${1:-$(basename $(dirname $(pwd)))/$(basename $(pwd))}
 	if [ -z "$TMUX" ]
 	then
 		tmux a -t $session || tmux new -s $session
