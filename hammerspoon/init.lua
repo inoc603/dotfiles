@@ -1,7 +1,3 @@
-hs.urlevent.bind("focus-kitty", function()
-    hs.application.launchOrFocus("kitty")
-end)
-
 hs.hotkey.bind({"cmd", "ctrl"}, "r", function()
   hs.reload()
 end)
@@ -20,13 +16,13 @@ end
 
 local wf=hs.window.filter
 
-alacritty = wf.new{'Alacritty'}
-
 function startsWith(str, start)
    return str:sub(1, #start) == start
 end
 
 local alacrittyPrefix = "alacritty-"
+
+local appCache = {}
 
 function moveToCenter(w)
     if startsWith(w:title(), alacrittyPrefix) then
@@ -35,12 +31,20 @@ function moveToCenter(w)
 end
 
 -- when alacritty windows is created or focused by hot key, make sure it's in the center screen.
+local alacritty = wf.new(false):setAppFilter('Alacritty', {allowTitles=1})
 alacritty:subscribe(wf.windowCreated, moveToCenter)
 alacritty:subscribe(wf.windowFocused, moveToCenter)
 
 function launchAlacritty(title, commands)
     title = alacrittyPrefix .. title
-    app = hs.window.get(title)
+
+    app = appCache[title]
+
+    if app == nil then
+	app = hs.window.get(title)
+	appCache[title] = app
+    end
+
     if app == nil then
         params = {"-t", title, "--config-file", os.getenv("HOME") .. "/.alacritty.yml"}
         if commands then
@@ -49,7 +53,15 @@ function launchAlacritty(title, commands)
                 table.insert(params, v)
             end
         end
-        hs.task.new("/Applications/Alacritty.app/Contents/MacOS/alacritty", nil, params):start()
+
+        hs.task.new(
+		"/Applications/Alacritty.app/Contents/MacOS/alacritty",
+		function()
+			print("STOPPED", title)
+			appCache[title] = nil
+		end,
+		params
+	):start()
     else
         app:focus()
     end

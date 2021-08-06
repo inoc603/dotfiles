@@ -81,3 +81,5 @@ source_safe ~/.p10k.zsh
 
 # enable fzf
 source_safe ~/.fzf.zsh
+
+add_path $HOME/.poetry/bin

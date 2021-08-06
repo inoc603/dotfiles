@@ -11,7 +11,7 @@ ssh-copy-id
 fzf
 
 tmux
-reattach-to-user-namespace
+# reattach-to-user-namespace
 
 # build tools for c/c++
 autoconf
@@ -30,11 +30,6 @@ the_silver_searcher
 
 # command line json processing
 jq
-
-# pyenv
-pyenv
-pyenv-pip-migrate
-pyenv-virtualenv
 
 # mysql cli
 mysql
