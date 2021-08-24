@@ -69,7 +69,7 @@ end
 
 -- ssh to devbox and attach to the last used tmux session.
 hs.hotkey.bind({"cmd", "ctrl"}, "k", function()
-    launchAlacritty("remote", {"cssh", "t"})
+    launchAlacritty("remote", {"ssh", "t"})
 end)
 
 -- attach to the last used tmux session or create one from home directory if there is none.

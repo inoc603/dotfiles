@@ -71,11 +71,6 @@ zinit wait lucid for \
 	pick'/dev/null' src"zpyenv.zsh" \
 		pyenv/pyenv-virtualenv
 
-zinit wait lucid for \
-	atclone'rm -rf $PWD/bin/c && echo "add_path $PWD/bin" > init.zsh' \
-	src'init.zsh' \
-		ms-jpq/isomorphic_copy
-
 # use n to manage node versions
 export N_PREFIX=$HOME/n
 add_path $N_PREFIX/bin
