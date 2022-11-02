@@ -1,0 +1,7 @@
+Dockerfile
+LICENSE
+Makefile
+README.md
+macos
+.git
+.dockerignore

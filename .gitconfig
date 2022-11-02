@@ -1,0 +1,62 @@
+[user]
+	name = inoc603
+	email = inoc603@gmail.com
+
+[core]
+	editor = nvim
+
+[color]
+	ui = auto
+[color "branch"]
+	current = yellow bold
+	local = green bold
+	remote = cyan bold
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[color "status"]
+	added = green bold
+	changed = yellow bold
+	untracked = red bold
+
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+
+[alias]
+	last = log -1 HEAD
+	amend = commit --amend
+	acn = !git add . -A && git commit --amend --no-edit
+	ac = !git add . -A && git commit -m
+	wip = !git add . -A && git commit -m "wip"
+	co = checkout
+
+	# remove all merged branches
+	bclean = !bash ~/.config/git/bclean.sh
+
+	tidy = !bash ~/.config/git/tidy.sh
+
+	# clone repository in gopath style
+	get = !bash ~/.config/git/get.sh
+
+	# create and push to remote branch
+	pushr = !bash ~/.config/git/pushr.sh
+
+	rbo = !git rebase -i origin/$(git branch --show-current)
+	rso = !git reset --hard origin/$(git branch --show-current)
+
+[pull]
+	rebase = true
+
+[include]
+	path = "~/.gitconfig.local"
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+
+; [remote "origin"]
+; 	fetch = +refs/pipelines/*:refs/remotes/origin/pipelines/*

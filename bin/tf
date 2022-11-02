@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+if [ -z "$TMUX" ]; then
+    fzf_bin="fzf"
+else
+    fzf_bin="fzf-tmux"
+    fzf_opts="-p --border vertical"
+fi
+
+src=${HOME}/src
+
+# Fuzzy find all git projects under ~/src
+next=$(find $src -type d -maxdepth 6 -name .git | xargs dirname | sed "s;^$src/;;g" | ${fzf_bin} ${fzf_opts})
+if [ -z "$next" ]; then
+    exit 0
+fi
+
+dir=$src/$next
+
+# Use the last 2 layer of the path as sessio name
+session=${1:-$(basename $(dirname $next))/$(basename $next)}
+
+# Escape . in path
+session=$(echo $session | sed 's/\./_/g')
+
+if [ -z "$TMUX" ]; then
+    tmux a -t=$session || tmux new -s $session -c $dir
+else
+    tmux has-session -t "$session" || tmux new-session -s "$session" -d -c $dir 
+    tmux switch-client -t "$session"
+fi
