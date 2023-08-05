@@ -1,0 +1,9 @@
+bundle
+init.vim
+tmp
+black
+plugged/
+
+.netrwhist
+
+plugin/
