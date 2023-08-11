@@ -173,7 +173,7 @@ nnoremap <F2> :%s/\s\+$//e<CR>
 
 if has("nvim")
         set termguicolors
-	luafile $HOME/.vim/lua/init.lua
+	luafile $HOME/.config/nvim/lua/init.lua
 	set jumpoptions=stack
 	set cmdheight=0
 endif

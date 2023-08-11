@@ -1,7 +1,16 @@
 tmux/
 Dockerfile
-.git/
+# .git/
 
 .config/fish/*
 !.config/fish/config.fish
 !.config/fish/fish_plugins
+.asdf/
+.z.lua/
+
+bin/*
+bin/run-alacritty.sh
+bin/tf
+bin/24-bit.sh
+
+.hammerspoon/Spoons/

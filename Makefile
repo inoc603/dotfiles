@@ -2,10 +2,7 @@ brew:
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 docker: phony
-	DOCKER_BUILDKIT=1 docker build --progress plain -t dotfiles .
-
-zlua:
-	git clone https://github.com/skywind3000/z.lua.git ${HOME}/.z.lua
+	docker build --progress plain -t dotfiles .
 
 starship: phony
 	curl -sS https://starship.rs/install.sh | sh

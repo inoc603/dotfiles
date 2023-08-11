@@ -16,3 +16,6 @@ bin/*
 bin/run-alacritty.sh
 bin/tf
 bin/24-bit.sh
+
+.asdf/
+.z.lua/
