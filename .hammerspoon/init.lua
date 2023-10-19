@@ -108,11 +108,13 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "i", function()
     hs.application.launchOrFocus("Google Chrome")
 end)
 
+-- press cmd + ctrl + j to launch or switch to wecom.
+-- press again to bring up the search dialog which doesn't have a shortcut yet.
 hs.hotkey.bind({ "cmd", "ctrl" }, "j", function()
-    if hs.application.launchOrFocus("企业微信") then
-        -- until wecom gets a shortkey for opening search, use the same key
-        -- to bring up the search dialog.
+    if hs.window.focusedWindow():title() == "企业微信" then
         hs.application.get("企业微信"):selectMenuItem({ "编辑", "全局搜索" })
+    else
+        hs.application.launchOrFocus("企业微信")
     end
 end)
 
