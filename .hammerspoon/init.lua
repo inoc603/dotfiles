@@ -25,10 +25,6 @@ local function possibleMainScreen()
         return math.max(a:fullFrame().w, a:fullFrame().h) > math.max(b:fullFrame().w, b:fullFrame().h)
     end)
 
-    -- for _, s in ipairs(screens) do
-    --     print(s:name(), s:fullFrame())
-    -- end
-
     return screens[1]
 end
 
@@ -113,11 +109,15 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "i", function()
 end)
 
 hs.hotkey.bind({ "cmd", "ctrl" }, "j", function()
-    hs.application.launchOrFocus("企业微信")
+    if hs.application.launchOrFocus("企业微信") then
+        -- until wecom gets a shortkey for opening search, use the same key
+        -- to bring up the search dialog.
+        hs.application.get("企业微信"):selectMenuItem({ "编辑", "全局搜索" })
+    end
 end)
 
 hs.hotkey.bind({ "cmd", "ctrl" }, "k", function()
-    hs.application.launchOrFocus("HoYoWave")
+    hs.application.launchOrFocus("Slack")
 end)
 
 -- open a new chrome tab and focus on the address bar
