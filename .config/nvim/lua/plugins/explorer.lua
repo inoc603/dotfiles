@@ -5,7 +5,7 @@ return {
         config = function()
             require("nvim-tree").setup {
                 filters = {
-                    custom = { '^.git' }
+                    custom = { '^.git$' }
                 },
                 renderer = {
                     highlight_git = true,

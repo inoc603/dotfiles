@@ -1,21 +1,4 @@
 return {
-    -- Fuzzy finder
-    {
-        'junegunn/fzf.vim',
-        dependencies = { 'junegunn/fzf' },
-        config = function()
-            vim.g.fzf_layout = { window = { height = 0.8, width = 0.8 } }
-            vim.cmd [[ let $FZF_DEFAULT_OPTS = '--reverse' ]]
-            local n = function(l, r)
-                vim.keymap.set("n", l, r, { silent = true })
-            end
-
-            vim.cmd [[ command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0) ]]
-
-            n("<leader>a", ":Ag<CR>")
-        end
-    },
-
     {
         'nvim-telescope/telescope.nvim',
         -- tag = '0.1.1',
@@ -25,21 +8,28 @@ return {
             'tom-anders/telescope-vim-bookmarks.nvim',
             'MattesGroeger/vim-bookmarks',
         },
-        vimgrep_arguments = {
-            "rg",
-            "--color=never",
-            "--no-heading",
-            "--with-filename",
-            "--line-number",
-            "--column",
-            "--smart-case",
-            "--trim" -- add this value
-        },
         config = function()
+            require("telescope").setup({
+                defaults = {
+                    vimgrep_arguments = {
+                        "rg",
+                        "--color=never",
+                        "--no-heading",
+                        "--with-filename",
+                        "--line-number",
+                        "--column",
+                        "--smart-case",
+                        "--hidden",
+                        "--trim" -- add this value
+                    },
+                }
+            })
+
             local builtin = require('telescope.builtin')
             local n = function(l, r)
                 vim.keymap.set("n", l, r, { silent = true })
             end
+
 
             local project_files = function()
                 local opts = {} -- define here if you want to define something
@@ -53,15 +43,7 @@ return {
 
             n('<C-p>', project_files)
             n('<leader>p', builtin.find_files)
-            n('<leader><leader>a', builtin.live_grep)
-            -- n('<leader>a', function()
-            --     builtin.grep_string {
-            --         shorten_path = true,
-            --         word_match = "-w",
-            --         only_sort_text = true,
-            --         search = '',
-            --     }
-            -- end)
+            n('<leader>a', builtin.live_grep)
             n('<leader>fb', builtin.buffers)
             n('<leader>rp', builtin.grep_string)
 
@@ -88,6 +70,27 @@ return {
                         return true
                     end
                 }
+            end)
+
+            local v = function(l, r)
+                vim.keymap.set("v", l, r, { silent = true })
+            end
+
+            function vim.getVisualSelection()
+                vim.cmd('noau normal! "vy"')
+                local text = vim.fn.getreg('v')
+                vim.fn.setreg('v', {})
+
+                text = string.gsub(text, "\n", "")
+                if #text > 0 then
+                    return text
+                else
+                    return ''
+                end
+            end
+
+            v("<leader>*", function()
+                builtin.live_grep({ default_text = vim.getVisualSelection() })
             end)
         end
     },

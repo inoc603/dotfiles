@@ -10,6 +10,16 @@ return {
         end,
     },
 
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        build = "cd app && yarn install",
+        init = function()
+            vim.g.mkdp_filetypes = { "markdown" }
+        end,
+        ft = { "markdown" },
+    },
+
     { 'rust-lang/rust.vim',         ft = 'rust' },
 
     { 'cespare/vim-toml',           ft = 'toml' },
@@ -25,4 +35,6 @@ return {
     { 'digitaltoad/vim-pug',        ft = 'pug' },
     { 'leafgarland/typescript-vim', ft = "typescript" },
     { 'ianks/vim-tsx',              ft = "typescript" },
+
+    { 'towolf/vim-helm' }
 }

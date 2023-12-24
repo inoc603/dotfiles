@@ -103,8 +103,19 @@ return {
             local null_ls = require("null-ls")
             null_ls.setup({
                 sources = {
-                    null_ls.builtins.formatting.black,
-                    -- null_ls.builtins.formatting.prettier,
+                    -- null_ls.builtins.formatting.black,
+                    -- null_ls.builtins.diagnostics.pylint,
+                    -- null_ls.builtins.formatting.autoflake.with({
+                    --     args = {
+                    --         "--remove-unused-variables",
+                    --         "--remove-all-unused-imports",
+                    --         "--stdin-display-name",
+                    --         "$FILENAME",
+                    --         -- "--in-place",
+                    --         "-",
+                    --     }
+                    -- }),
+                    null_ls.builtins.formatting.prettier,
                     null_ls.builtins.diagnostics.buf,
                     null_ls.builtins.formatting.buf,
                     null_ls.builtins.formatting.sqlfluff.with({
@@ -118,6 +129,18 @@ return {
             })
 
             setup("tsserver", {})
+
+            setup("yamlls", {
+                settings = {
+                    yaml = {
+                        format = { enable = true },
+                        schemaStore = {
+                            url = "https://www.schemastore.org/api/json/catalog.json",
+                            enable = true,
+                        }
+                    }
+                }
+            })
 
             setup("rust_analyzer", {
                 settings = {
@@ -177,37 +200,30 @@ return {
 
             setup("graphql", {})
 
-            local path = require('lspconfig/util').path
+            -- setup("pylsp", {
+            --     settings = {
+            --         pylsp = {
+            --             plugins = {
+            --                 autopep8 = { enabled = false },
+            --                 pycodestyle = { enabled = false },
+            --                 yapf = { enabled = false },
+            --                 black = { enabled = false },
+            --                 jedi_completion = { enabled = true, fuzzy = true },
+            --                 rope_autoimport = { enabled = true },
+            --             }
+            --         }
+            --     }
+            -- })
 
-            local function get_python_path(workspace)
-                -- Use activated virtualenv.
-                if vim.env.VIRTUAL_ENV then
-                    return path.join(vim.env.VIRTUAL_ENV, 'bin', 'python')
-                end
+            setup("pyright", {})
 
-                -- Use the python from venv configured in pyrightconfig.json
-                if vim.fn.filereadable(path.join(workspace, "pyrightconfig.json")) then
-                    local conf = vim.fn.json_decode(vim.fn.readfile(path.join(workspace, "pyrightconfig.json")))
-                    local python_from_pyrightconfig_json = path.join(workspace, conf["venvPath"], conf["venv"],
-                        "bin/python")
-                    if vim.fn.executable(python_from_pyrightconfig_json) then
-                        return python_from_pyrightconfig_json
-                    end
-                end
-
-                return ""
-            end
-
-            setup("pyright", {
-                before_init = function(_, config)
-                    local python_path = get_python_path(config.root_dir)
-                    if python_path ~= '' then
-                        config.settings.python.pythonPath = python_path
-                    end
-                end
-            })
+            setup("ruff_lsp", {})
 
             setup("bufls", {})
+
+            setup("helm_ls", {})
+
+            setup("terraformls", {})
         end
     },
 

@@ -37,21 +37,6 @@ endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Search
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set hlsearch
-set ignorecase
-set smartcase
-
-" Cancel highlight when you're done seraching
-nnoremap <F10> :nohlsearch<CR>
-
-" center the cursor when moving between search results
-nnoremap n nzzzv
-nnoremap N Nzzzv
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basic key map
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use space as leader key
@@ -68,6 +53,22 @@ inoremap kj <Esc>
 
 " A terrible place to be.
 nnoremap Q <nop>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Search
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set hlsearch
+set ignorecase
+set smartcase
+
+" Cancel highlight when you're done seraching
+" nnoremap <F10> :nohlsearch<CR>
+nnoremap <leader>/ :nohlsearch<CR>
+
+" center the cursor when moving between search results
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
