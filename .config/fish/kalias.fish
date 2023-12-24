@@ -1,5 +1,6 @@
 function __kubectl_safe_command \
     -d "echo a command that runs kubectl with explicit config file and context"
+
     # We don't simply alias to "kubectl --context some-context" because it won't work
     # for custom k8s plugins and some built in k8s commands. The plugins require --context and
     # --kubeconfig to be passed after the plugin name.
@@ -23,5 +24,13 @@ complete -c __kubectl_safe -n '__kubectl_safe_completions' -f -a '$__kubectl_com
 
 function kalias \
     -d "add a alias to run kubectl with explicit config file and context"
+
     alias $argv[1] "__kubectl_safe $argv[2] $argv[3]"
+end
+
+function kubeconfig \
+    -d "select and set kubeconfig for the shell session"
+
+    set -l kubeconfig (ls $HOME/.kube/config* | fzf)
+    test -n "$kubeconfig" && set -gx KUBECONFIG $kubeconfig
 end
