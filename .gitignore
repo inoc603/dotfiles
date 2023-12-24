@@ -9,8 +9,10 @@
 !.config/git
 
 !.config/fish/config.fish
+!.config/fish/kalias.fish
 !.config/fish/fish_plugins
 !.config/nvim
+!.config/ideavim
 
 bin/*
 bin/run-alacritty.sh
@@ -19,3 +21,5 @@ bin/24-bit.sh
 
 .asdf/
 .z.lua/
+
+.DS_Store
