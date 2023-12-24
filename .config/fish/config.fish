@@ -21,6 +21,16 @@ if status is-interactive
 
     # ctrl-i to go to the next directory in directory history
     bind \ci nextd-or-forward-word
+
+    alias k=kubectl
+end
+
+function safe_source
+    if test -e $argv[1]
+		source $argv[1]
+	else
+		echo "$argv[1] doesn't exist. Unable to source."
+	end
 end
 
 # create a new tmux session for the current directory
@@ -58,3 +68,8 @@ if test -e "$VIRTUAL_ENV"
 	source "$VIRTUAL_ENV/bin/activate.fish"
 end
 
+
+# Created by `userpath` on 2023-10-19 03:41:54
+set PATH $PATH /Users/eddie.huang/.local/bin
+
+safe_source $HOME/.local.fish

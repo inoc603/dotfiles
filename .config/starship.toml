@@ -5,6 +5,7 @@ $directory\
 $git_branch\
 $git_state\
 $git_status\
+$kubernetes\
 $cmd_duration\
 $line_break\
 $python\
@@ -52,3 +53,13 @@ style = "bright-black"
 disabled=false
 format="[$time]($style) "
 style="bright-black"
+
+[kubernetes]
+disabled=false
+symbol=''
+format='[$symbol$context( \($namespace\))]($style) '
+style='red bold'
+
+[kubernetes.context_aliases]
+'orbstack' = "\b"
+'gke_.*_(?P<var_cluster>[\w-]+)' = 'gke-$var_cluster'
