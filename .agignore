@@ -1,6 +1,8 @@
 node_modules
 vendor
-.git
+.git/
 
 thrift_gen
 kitex_gen
+
+!.config/

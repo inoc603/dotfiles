@@ -1,3 +1,7 @@
 [*.{js,vue}]
 indent_style = space
 indent_size = 2
+
+[*.{fish,sh,zsh}]
+indent_style = space
+indent_size = 4
