@@ -12,15 +12,14 @@ return {
         config = function()
             require("trouble").setup {}
         end
-    },
 
+    },
     {
         'simrat39/symbols-outline.nvim',
         config = function()
             require("symbols-outline").setup()
         end
     },
-
 
     {
         'neovim/nvim-lspconfig',
@@ -200,22 +199,40 @@ return {
 
             setup("graphql", {})
 
-            -- setup("pylsp", {
-            --     settings = {
-            --         pylsp = {
-            --             plugins = {
-            --                 autopep8 = { enabled = false },
-            --                 pycodestyle = { enabled = false },
-            --                 yapf = { enabled = false },
-            --                 black = { enabled = false },
-            --                 jedi_completion = { enabled = true, fuzzy = true },
-            --                 rope_autoimport = { enabled = true },
-            --             }
-            --         }
-            --     }
-            -- })
+            local util = require 'lspconfig.util'
 
-            setup("pyright", {})
+            require("lspconfig.configs").pylance = {
+                default_config = {
+                    cmd = {
+                        'pylance-hack',
+                    },
+                    filetypes = { 'python' },
+                    name = "pylance",
+                    root_dir = function(fname)
+                        return util.root_pattern(unpack({
+                            'pyproject.toml',
+                            'setup.py',
+                            'setup.cfg',
+                            'requirements.txt',
+                            'Pipfile',
+                            'pylanceconfig.json',
+                            '.git',
+                        }))(fname)
+                    end,
+                    single_file_support = true,
+                    settings = {
+                        python = {
+                            analysis = {
+                                autoSearchPaths = true,
+                                useLibraryCodeForTypes = true,
+                                diagnosticMode = 'openFilesOnly',
+                            },
+                        },
+                    },
+                },
+            }
+
+            setup("pylance", {})
 
             setup("ruff_lsp", {})
 
