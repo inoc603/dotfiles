@@ -39,7 +39,18 @@ return {
             end
 
             local nnoremap = keymap("n", { noremap = true, silent = true })
-            nnoremap("<c-\\>", require("nvim-tree.api").tree.toggle)
+            nnoremap("<c-\\>", function()
+                require("nvim-tree.api").tree.toggle()
+                -- The highlight group is somehow reset when first the tree
+                -- is toggled for the first time. Manually link the highlight
+                -- groups so the color doesn't look odd.
+                vim.cmd [[
+                    highlight! link NvimTreeNormal Normal
+                ]]
+                vim.cmd [[
+                    highlight! link NvimTreeEndOfBuffer Conceal
+                ]]
+            end)
         end
     },
 

@@ -102,18 +102,6 @@ return {
             local null_ls = require("null-ls")
             null_ls.setup({
                 sources = {
-                    -- null_ls.builtins.formatting.black,
-                    -- null_ls.builtins.diagnostics.pylint,
-                    -- null_ls.builtins.formatting.autoflake.with({
-                    --     args = {
-                    --         "--remove-unused-variables",
-                    --         "--remove-all-unused-imports",
-                    --         "--stdin-display-name",
-                    --         "$FILENAME",
-                    --         -- "--in-place",
-                    --         "-",
-                    --     }
-                    -- }),
                     null_ls.builtins.formatting.prettier,
                     null_ls.builtins.diagnostics.buf,
                     null_ls.builtins.formatting.buf,
