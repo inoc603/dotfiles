@@ -88,7 +88,9 @@ return {
             )
 
             local function setup(server, server_opts)
-                server_opts.on_attach = on_attach
+                if not server_opts.on_attach then
+                    server_opts.on_attach = on_attach
+                end
                 server_opts.flags = {
                     -- this is the default in Nvim 0.7+
                     debounce_text_changes = 150,
@@ -220,7 +222,13 @@ return {
                 },
             }
 
-            setup("pylance", {})
+            setup("pylance", {
+                on_attach = function(_, bufnr)
+                    on_attach(_, bufnr)
+                    -- select venv when connected.
+                    require('venv-selector').retrieve_from_cache()
+                end,
+            })
 
             setup("ruff_lsp", {})
 
