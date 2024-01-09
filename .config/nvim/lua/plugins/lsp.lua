@@ -225,6 +225,17 @@ return {
             setup("pylance", {
                 on_attach = function(_, bufnr)
                     on_attach(_, bufnr)
+
+                    -- calls ruff fix all
+                    vim.keymap.set("n", '<leader><leader>f', function()
+                        vim.lsp.buf.code_action({
+                            filter = function(action)
+                                return action.title == "Ruff: Fix All"
+                            end,
+                            apply = true,
+                        })
+                    end, { buffer = bufnr })
+
                     -- select venv when connected.
                     require('venv-selector').retrieve_from_cache()
                 end,
