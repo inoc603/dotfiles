@@ -47,6 +47,8 @@ return {
             n('<leader>fb', builtin.buffers)
             n('<leader>rp', builtin.grep_string)
 
+            n('<leader><leader>p', builtin.resume)
+
             n('<leader>ll', builtin.lsp_dynamic_workspace_symbols)
 
             local search_lsp_symbols = function(symbol)

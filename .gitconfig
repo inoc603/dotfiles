@@ -1,65 +1,85 @@
 [user]
-	name = inoc603
-	email = inoc603@gmail.com
+name = inoc603
+email = inoc603@gmail.com
 
 [core]
-	editor = nvim
+editor = nvim
+pager = delta
+
+[interactive]
+diffFilter = delta --color-only
+
+[delta]
+# use n and N to move between diff sections
+navigate = true    
+# set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+light = false      
+
+[merge]
+conflictstyle = diff3
+
+[diff]
+colorMoved = default
 
 [color]
-	ui = auto
+ui = auto
+
 [color "branch"]
-	current = yellow bold
-	local = green bold
-	remote = cyan bold
+current = yellow bold
+local = green bold
+remote = cyan bold
+
 [color "diff"]
-	meta = yellow bold
-	frag = magenta bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
+meta = yellow bold
+frag = magenta bold
+old = red bold
+new = green bold
+whitespace = red reverse
+
 [color "status"]
-	added = green bold
-	changed = yellow bold
-	untracked = red bold
+added = green bold
+changed = yellow bold
+untracked = red bold
 
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
+clean = git-lfs clean %f
+smudge = git-lfs smudge %f
+required = true
 
 [alias]
-	last = log -1 HEAD
-	amend = commit --amend
-	acn = !git add . -A && git commit --amend --no-edit
-	ac = !git add . -A && git commit -m
-	wip = !git add . -A && git commit -m "wip"
-	co = checkout
+last = log -1 HEAD
+amend = commit --amend
+acn = !git add . -A && git commit --amend --no-edit
+ac = !git add . -A && git commit -m
+wip = !git add . -A && git commit -m "wip"
+co = checkout
+cob = checkout -b
 
-	# remove all merged branches
-	bclean = !bash ~/.config/git/bclean.sh
+# remove all merged branches
+bclean = !bash ~/.config/git/bclean.sh
 
-	tidy = !bash ~/.config/git/tidy.sh
+tidy = !bash ~/.config/git/tidy.sh
 
-	# clone repository in gopath style
-	get = !bash ~/.config/git/get.sh
+# clone repository in gopath style
+get = !bash ~/.config/git/get.sh
 
-	# create and push to remote branch
-	pushr = !bash ~/.config/git/pushr.sh
+# create and push to remote branch
+pushr = !bash ~/.config/git/pushr.sh
 
-	rbo = !git rebase -i origin/$(git branch --show-current)
-	rbm = !git fetch -a && git rebase $(git rev-parse --abbrev-ref origin/HEAD)
-	rso = !git reset --hard origin/$(git branch --show-current)
+rbo = !git rebase -i origin/$(git branch --show-current)
+rbm = !git fetch -a && git rebase $(git rev-parse --abbrev-ref origin/HEAD)
+rso = !git reset --hard origin/$(git branch --show-current)
 
-	open = !bash ~/.config/git/open.sh
+open = !bash ~/.config/git/open.sh
 
 [pull]
-	rebase = true
+rebase = true
 
 [include]
-	path = "~/.gitconfig.local"
+path = "~/.gitconfig.local"
 
 [url "ssh://git@github.com/inoc603"]
-	insteadOf = https://github.com/inoc603
+insteadOf = https://github.com/inoc603
 
 ; [remote "origin"]
 ; 	fetch = +refs/pipelines/*:refs/remotes/origin/pipelines/*

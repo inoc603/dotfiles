@@ -18,7 +18,16 @@ return {
     {
         "folke/flash.nvim",
         event = "VeryLazy",
-        opts = {},
+        opts = {
+            modes = {
+                search = {
+                    enabled = false
+                },
+                char = {
+                    enabled = false
+                },
+            },
+        },
         keys = {
             {
                 "<leader>s",

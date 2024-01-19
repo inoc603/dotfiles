@@ -1,3 +1,5 @@
+export XDG_CONFIG_HOME="$HOME/.config"
+
 if status is-interactive
 
     starship init fish | source
@@ -23,6 +25,8 @@ if status is-interactive
     bind \ci nextd-or-forward-word
 
     alias k=kubectl
+
+    alias lg=lazygit
 end
 
 function safe_source
