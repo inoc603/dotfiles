@@ -32,8 +32,6 @@ end
 function safe_source
     if test -e $argv[1]
 		source $argv[1]
-	else
-		echo "$argv[1] doesn't exist. Unable to source."
 	end
 end
 

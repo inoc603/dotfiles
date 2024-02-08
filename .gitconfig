@@ -81,5 +81,3 @@ path = "~/.gitconfig.local"
 [url "ssh://git@github.com/inoc603"]
 insteadOf = https://github.com/inoc603
 
-; [remote "origin"]
-; 	fetch = +refs/pipelines/*:refs/remotes/origin/pipelines/*
