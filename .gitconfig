@@ -50,6 +50,9 @@ required = true
 last = log -1 HEAD
 amend = commit --amend
 acn = !git add . -A && git commit --amend --no-edit
+acr = !git acn && git restack
+acrs = !git acr && git submit -c
+acrm = !git acr && git mr-sync
 ac = !git add . -A && git commit -m
 wip = !git add . -A && git commit -m "wip"
 co = checkout
@@ -68,6 +71,8 @@ pushr = !bash ~/.config/git/pushr.sh
 
 rbo = !git rebase -i origin/$(git branch --show-current)
 rbm = !git fetch -a && git rebase $(git rev-parse --abbrev-ref origin/HEAD)
+rba = rebase --abort
+rbc = rebase --continue
 rso = !git reset --hard origin/$(git branch --show-current)
 
 open = !bash ~/.config/git/open.sh

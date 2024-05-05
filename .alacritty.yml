@@ -56,7 +56,7 @@ key_bindings:
   # cmd + , to open config file in nvim
   - key: Comma
     mods: Command
-    command: 
+    command:
       program: "/Applications/Alacritty.app/Contents/MacOS/alacritty"
       args: ["-e", "fish", "--login", "-i", "-c", "nvim ~/.alacritty.yml"]
   # make sure ctrl + space works in vim
@@ -67,3 +67,6 @@ key_bindings:
 env:
   LC_ALL: zh_CN.UTF-8
   TERM: xterm-256color
+
+input:
+  alt_send_esc: true

@@ -65,5 +65,16 @@ return {
                 close_buffers.wipe({ type = 'hidden' })
             end, { force = true })
         end
-    }
+    },
+
+    {
+        'stevearc/oil.nvim',
+        opts = {},
+        config = function()
+            require("oil").setup()
+        end,
+        -- Optional dependencies
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+    },
+
 }

@@ -177,7 +177,6 @@ return {
                             unusedparams = true,
                         },
                         staticcheck = true,
-                        memoryMode = "DegradeClosed",
                         gofumpt = true,
                     },
                 },
@@ -213,9 +212,11 @@ return {
                     settings = {
                         python = {
                             analysis = {
-                                autoSearchPaths = true,
-                                useLibraryCodeForTypes = true,
-                                diagnosticMode = 'openFilesOnly',
+                                autoImportCompletions = true,
+                                -- logLevel = "Trace",
+                                -- exclude = { "**/__pycache__", ".venv", ".git" },
+                                -- useLibraryCodeForTypes = false,
+                                userFileIndexingLimit = -1,
                             },
                         },
                     },

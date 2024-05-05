@@ -11,4 +11,16 @@ return {
             vim.keymap.set("n", "<Leader>T", ":TigOpenProjectRootDir<CR>")
         end
     },
+    {
+        'akinsho/git-conflict.nvim',
+        config = function()
+            require('git-conflict').setup({
+                highlights = {
+                    incoming = 'DiffAdd',
+                    current = 'DiffChange',
+                    ancestor = 'Folded',
+                }
+            })
+        end
+    },
 }
