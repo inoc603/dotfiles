@@ -36,5 +36,7 @@ return {
     { 'leafgarland/typescript-vim', ft = "typescript" },
     { 'ianks/vim-tsx',              ft = "typescript" },
 
-    { 'towolf/vim-helm' }
+    { 'towolf/vim-helm' },
+
+    {'codethread/qmk.nvim'},
 }

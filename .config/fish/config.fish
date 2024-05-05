@@ -75,3 +75,6 @@ end
 set PATH $PATH /Users/eddie.huang/.local/bin
 
 safe_source $HOME/.local.fish
+
+# Created by `pipx` on 2024-05-04 10:19:41
+set PATH $PATH /Users/inoc/.local/bin
