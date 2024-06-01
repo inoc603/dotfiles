@@ -53,8 +53,10 @@ acn = !git add . -A && git commit --amend --no-edit
 acr = !git acn && git restack
 acrs = !git acr && git submit -c
 acrm = !git acr && git mr-sync
+# (b)ranch_(s)ync run git sync against the current branch
+bs = !git sync -p -m $(git rev-parse --abbrev-ref HEAD)
 ac = !git add . -A && git commit -m
-wip = !git add . -A && git commit -m "wip"
+wip = !git add . -A && git commit -n -m "wip"
 co = checkout
 cob = checkout -b
 

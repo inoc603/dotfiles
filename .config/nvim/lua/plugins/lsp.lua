@@ -223,7 +223,12 @@ return {
                 },
             }
 
+            -- disable some hints that complains about unused functions.
+            local pylance_caps = vim.lsp.protocol.make_client_capabilities()
+            pylance_caps.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+
             setup("pylance", {
+                capabilities = pylance_caps,
                 on_attach = function(_, bufnr)
                     on_attach(_, bufnr)
 

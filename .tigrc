@@ -1,6 +1,8 @@
 bind main R !git rebase -i %(commit)^
 bind diff R !git rebase -i %(commit)^
 
+set reference-format = hide:other
+
 # The following is modified from https://github.com/ninjabreakbot/tig-gruvbox
 
 # tig settings

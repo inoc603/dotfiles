@@ -40,7 +40,10 @@ endif
 " Basic key map
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use space as leader key
-let mapleader=' '
+let mapleader="\<space>"
+
+" Map backspace which is at the thumb on the glove80 to work as leader as well
+nmap <BS> <leader> 
 
 " Disable arrow keys
 noremap <up> <nop>
