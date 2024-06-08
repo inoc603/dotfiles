@@ -41,24 +41,6 @@ return {
     -- Edit surrounds with ease
     'tpope/vim-surround',
 
-    -- Code comment
-    {
-        'numToStr/Comment.nvim',
-        config = function()
-            require('Comment').setup({
-                mappings = false,
-            })
-
-            -- <leader>n to toggle comments for the current line in normal mode
-            vim.keymap.set("n", "<leader>n", function()
-                require("Comment.api").toggle.linewise.current()
-            end)
-
-            -- <leader>n to toggle comments for the selected lines in visual mode
-            vim.keymap.set('x', '<leader>n', '<Plug>(comment_toggle_linewise_visual)')
-        end
-    },
-
     -- Multicursor editing
     {
         'terryma/vim-multiple-cursors',

@@ -33,3 +33,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end,
     once = true,
 })
+
+vim.api.nvim_set_keymap("n", "<leader>n", "gcc", {})
+vim.api.nvim_set_keymap("x", "<leader>n", "gc", {})
