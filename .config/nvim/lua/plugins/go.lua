@@ -53,6 +53,7 @@ return {
     -- visual code coverage
     {
         'andythigpen/nvim-coverage',
+        event = "VeryLazy",
         dependencies = {
             'nvim-lua/plenary.nvim',
             'sainnhe/gruvbox-material',
