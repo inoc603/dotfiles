@@ -104,7 +104,7 @@ return {
             local null_ls = require("null-ls")
             null_ls.setup({
                 sources = {
-                    null_ls.builtins.formatting.prettier,
+                    -- null_ls.builtins.formatting.prettier,
                     null_ls.builtins.diagnostics.buf,
                     null_ls.builtins.formatting.buf,
                     null_ls.builtins.formatting.sqlfluff.with({
@@ -236,7 +236,7 @@ return {
                     vim.keymap.set("n", '<leader><leader>f', function()
                         vim.lsp.buf.code_action({
                             filter = function(action)
-                                return action.title == "Ruff: Fix All"
+                                return action.title == "Ruff: Fix all auto-fixable problems"
                             end,
                             apply = true,
                         })
@@ -247,7 +247,7 @@ return {
                 end,
             })
 
-            setup("ruff_lsp", {})
+            setup("ruff", {})
 
             setup("bufls", {})
 

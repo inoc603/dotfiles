@@ -42,7 +42,9 @@ return {
             end
 
             n('<C-p>', project_files)
-            n('<leader>p', builtin.find_files)
+            n('<leader>p', function()
+                builtin.find_files({ no_ignore = true, hidden = true })
+            end)
             n('<leader>a', builtin.live_grep)
             n('<leader>fb', builtin.buffers)
             n('<leader>rp', builtin.grep_string)

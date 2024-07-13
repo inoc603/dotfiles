@@ -27,6 +27,8 @@ if status is-interactive
     alias k=kubectl
 
     alias lg=lazygit
+
+    alias g=git
 end
 
 function safe_source

@@ -73,6 +73,7 @@ pushr = !bash ~/.config/git/pushr.sh
 
 rbo = !git rebase -i origin/$(git branch --show-current)
 rbm = !git fetch -a && git rebase $(git rev-parse --abbrev-ref origin/HEAD)
+diffo = !git diff origin/$(git branch --show-current)
 rba = rebase --abort
 rbc = rebase --continue
 rso = !git reset --hard origin/$(git branch --show-current)
