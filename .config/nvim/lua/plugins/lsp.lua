@@ -117,7 +117,7 @@ return {
                 on_attach = on_attach,
             })
 
-            setup("tsserver", {})
+            setup("ts_ls", {})
 
             setup("yamlls", {
                 settings = {
@@ -248,6 +248,8 @@ return {
             })
 
             setup("ruff", {})
+
+            setup("zls", {})
 
             setup("bufls", {})
 
