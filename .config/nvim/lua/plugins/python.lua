@@ -15,6 +15,7 @@ return {
             },
             -- auto_refresh = false
             search_venv_managers = false,
+            stay_on_this_version = true,
             parents = 0,
         },
         event = "VeryLazy", -- Optional: needed only if you want to type `:VenvSelect` without a keymapping

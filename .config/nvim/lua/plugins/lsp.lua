@@ -104,7 +104,7 @@ return {
             local null_ls = require("null-ls")
             null_ls.setup({
                 sources = {
-                    -- null_ls.builtins.formatting.prettier,
+                    null_ls.builtins.formatting.prettier,
                     null_ls.builtins.diagnostics.buf,
                     null_ls.builtins.formatting.buf,
                     null_ls.builtins.formatting.sqlfluff.with({
@@ -117,7 +117,13 @@ return {
                 on_attach = on_attach,
             })
 
-            setup("ts_ls", {})
+            setup("ts_ls", {
+                on_attach = function(client, bufnr)
+                    client.server_capabilities.documentFormattingProvider = false
+                    client.server_capabilities.documentRangeFormattingProvider = false
+                    on_attach(_, bufnr)
+                end
+            })
 
             setup("yamlls", {
                 settings = {
@@ -227,8 +233,8 @@ return {
             local pylance_caps = vim.lsp.protocol.make_client_capabilities()
             pylance_caps.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
 
-            setup("pylance", {
-                capabilities = pylance_caps,
+            setup("basedpyright", {
+                -- capabilities = pylance_caps,
                 on_attach = function(_, bufnr)
                     on_attach(_, bufnr)
 
@@ -245,6 +251,24 @@ return {
                     -- select venv when connected.
                     require('venv-selector').retrieve_from_cache()
                 end,
+                settings = {
+                    basedpyright = {
+                        analysis = {
+                            typeCheckingMode = "basic",
+                            diagnosticSeverityOverrides = {
+                                reportAny = false,
+                                reportUnknownMemberType = false,
+                                reportUnknownArgumentType = false,
+                                reportArgumentType = false,
+                                reportUnknownVariableType = false,
+                                -- reportUnusedClass = "warning",
+                                -- reportUnusedFunction = "warning",
+                                reportUndefinedVariable = false, -- ruff handles this with F822
+                                reportUnusedImport = false,      -- ruff F401
+                            }
+                        },
+                    }
+                }
             })
 
             setup("ruff", {})
