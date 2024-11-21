@@ -3,7 +3,7 @@
 git fetch -a
 
 current_branch="$(git rev-parse --abbrev-ref HEAD)"
-remote_main_branch="$(git rev-parse --abbrev-ref origin/HEAD)"
+remote_main_branch="$(git rev-parse --abbrev-ref origin/HEAD || (git remote set-head origin -a && git rev-parse --abbrev-ref origin/HEAD))"
 local_main_brach=$(echo $remote_main_branch | cut -d/ -f2)
 
 if [ $current_branch == $local_main_brach ]; then

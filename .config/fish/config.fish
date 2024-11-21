@@ -13,7 +13,7 @@ if status is-interactive
 
     alias pf="ps -ef | grep"
 
-    alias ls=exa
+    alias ls=eza
 
     # ctrl-u to go up one directory, equalvelant to cd ..
     bind \cu "cd ..; commandline -f repaint"

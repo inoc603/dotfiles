@@ -14,7 +14,12 @@ return {
         version = false, -- set this if you want to always pull the latest change
         opts = {
             -- add any opts here
-            provider = "copilot"
+            -- provider = "copilot"
+            provider = "openai",
+            auto_suggestions_provider = "copilot",
+            openai = {
+                endpoint = "https://ai-proxy.airbase.gcp-sg.dev.awx.im/proxy/openai/v1"
+            }
         },
         -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
         build = "make",
