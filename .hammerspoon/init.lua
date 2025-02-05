@@ -64,7 +64,7 @@ local function launchAlacritty(title, commands)
 
     if window == nil then
         local params = {
-            "-t", title, "--config-file", os.getenv("HOME") .. "/.alacritty.yml"
+            "-t", title, "--config-file", os.getenv("HOME") .. "/.alacritty.toml"
         }
         if commands then
             table.insert(params, "-e")
@@ -101,7 +101,7 @@ end
 
 -- attach to the last used tmux session or create one from home directory if there is none.
 hs.hotkey.bind({ "cmd", "ctrl" }, "l", function()
-    launchAlacritty("local", { "/opt/homebrew/bin/fish", "-l", "-i", "-c", "ta" })
+    launchAlacritty("local", { "/opt/homebrew/bin/fish", "-i", "-c", "ta" })
 end)
 
 hs.hotkey.bind({ "cmd", "ctrl" }, "i", function()

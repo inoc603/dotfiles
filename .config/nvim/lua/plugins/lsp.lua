@@ -117,11 +117,21 @@ return {
                 on_attach = on_attach,
             })
 
+
             setup("ts_ls", {
                 on_attach = function(client, bufnr)
                     client.server_capabilities.documentFormattingProvider = false
                     client.server_capabilities.documentRangeFormattingProvider = false
                     on_attach(_, bufnr)
+
+                    vim.keymap.set("n", '<leader><leader>f', function()
+                        local params = {
+                            command = "_typescript.organizeImports",
+                            arguments = { vim.api.nvim_buf_get_name(0) },
+                            title = ""
+                        }
+                        vim.lsp.buf.execute_command(params)
+                    end, { buffer = bufnr })
                 end
             })
 
@@ -249,7 +259,7 @@ return {
                     end, { buffer = bufnr })
 
                     -- select venv when connected.
-                    require('venv-selector').retrieve_from_cache()
+                    -- require('venv-selector').retrieve_from_cache()
                 end,
                 settings = {
                     basedpyright = {
@@ -275,7 +285,7 @@ return {
 
             setup("zls", {})
 
-            setup("bufls", {})
+            setup("buf_ls", {})
 
             setup("helm_ls", {})
 

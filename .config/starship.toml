@@ -60,6 +60,10 @@ symbol=''
 format='[$symbol$context( \($namespace\))]($style) '
 style='red bold'
 
-[kubernetes.context_aliases]
-'orbstack' = "\b"
-'gke_.*_(?P<var_cluster>[\w-]+)' = 'gke-$var_cluster'
+[[kubernetes.contexts]]
+context_pattern='orbstack'
+context_alias = "\b"
+
+[[kubernetes.contexts]]
+context_pattern='gke_.*_(?P<var_cluster>[\w-]+)'
+context_alias = "gke-$var_cluster"
