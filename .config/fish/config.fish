@@ -55,6 +55,26 @@ function ta
 	tmux a || tn
 end
 
+function zn
+    set session (basename (pwd))
+    zellij a -c $session
+end
+
+function zellij_tab_name_update_pre --on-event fish_preexec
+    if set -q ZELLIJ
+        set title (string split ' ' $argv)[1]
+        command nohup zellij action rename-tab $title >/dev/null 2>&1
+    end
+end
+
+function zellij_tab_name_update_post --on-event fish_prompt
+    if set -q ZELLIJ
+        set title "fish"
+        command nohup zellij action rename-tab $title >/dev/null 2>&1
+    end
+end
+
+
 source $HOME/.asdf/asdf.fish
 
 set -g _ZL_CMD j
@@ -82,3 +102,7 @@ safe_source $HOME/.local.fish
 
 # Created by `pipx` on 2024-05-04 10:19:41
 set PATH $PATH /Users/inoc/.local/bin
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init.fish 2>/dev/null || :

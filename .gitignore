@@ -14,11 +14,13 @@
 !.config/nvim
 !.config/ideavim
 !.config/tmux/*.conf
+!.config/zellij
 
 bin/*
 bin/run-alacritty.sh
 bin/tf
 bin/24-bit.sh
+bin/find_git_dir.sh
 
 .asdf/
 .z.lua/

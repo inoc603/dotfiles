@@ -17,6 +17,11 @@ return {
             -- provider = "copilot"
             provider = "openai",
             auto_suggestions_provider = "copilot",
+            mappings = {
+                ask = "<leader>ua", -- ask
+                edit = "<leader>ue", -- edit
+                refresh = "<leader>ur", -- refresh
+            },
             openai = {
                 endpoint = "https://ai-proxy.airbase.gcp-sg.dev.awx.im/proxy/openai/v1"
             }

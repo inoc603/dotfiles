@@ -147,11 +147,25 @@ return {
                 }
             })
 
-            setup("rust_analyzer", {
-                settings = {
-                    ["rust-analyzer"] = {}
-                }
-            })
+            vim.g.rustaceanvim = {
+                -- Plugin configuration
+                tools = {},
+                -- LSP configuration
+                server = {
+                    on_attach = on_attach,
+                    default_settings = {
+                        ['rust-analyzer'] = {},
+                    },
+                },
+                -- DAP configuration
+                dap = {},
+            }
+
+            -- setup("rust_analyzer", {
+            --     settings = {
+            --         ["rust-analyzer"] = {}
+            --     }
+            -- })
 
             setup("lua_ls", {
                 settings = {
@@ -186,7 +200,8 @@ return {
             })
 
             setup("gopls", {
-                cmd = { "gopls", "-remote=auto" },
+                -- cmd = { "gopls", "-remote=auto" },
+                cmd = { "gopls" },
                 settings = {
                     gopls = {
                         analyses = {

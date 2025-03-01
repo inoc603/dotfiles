@@ -101,7 +101,7 @@ end
 
 -- attach to the last used tmux session or create one from home directory if there is none.
 hs.hotkey.bind({ "cmd", "ctrl" }, "l", function()
-    launchAlacritty("local", { "/opt/homebrew/bin/fish", "-i", "-c", "ta" })
+    launchAlacritty("local", { "/opt/homebrew/bin/fish", "-i", "-c", "zn" })
 end)
 
 hs.hotkey.bind({ "cmd", "ctrl" }, "i", function()
