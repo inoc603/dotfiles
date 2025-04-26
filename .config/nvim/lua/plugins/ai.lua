@@ -1,12 +1,4 @@
 return {
-    -- {
-    --     "zbirenbaum/copilot-cmp",
-    --     dependencies = { "zbirenbaum/copilot.lua" },
-    --     config = function()
-    --         require("copilot_cmp").setup()
-    --     end
-    -- },
-
     {
         "yetone/avante.nvim",
         event = "VeryLazy",
@@ -18,13 +10,10 @@ return {
             provider = "openai",
             auto_suggestions_provider = "copilot",
             mappings = {
-                ask = "<leader>ua", -- ask
-                edit = "<leader>ue", -- edit
+                ask = "<leader>ua",     -- ask
+                edit = "<leader>ue",    -- edit
                 refresh = "<leader>ur", -- refresh
             },
-            openai = {
-                endpoint = "https://ai-proxy.airbase.gcp-sg.dev.awx.im/proxy/openai/v1"
-            }
         },
         -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
         build = "make",

@@ -10,7 +10,7 @@ fi
 src=${HOME}/src
 
 # Fuzzy find all git projects under ~/src
-next=$(find $src -type d -maxdepth 6 -name .git -prune | xargs dirname | sed "s;^$src/;;g" | ${fzf_bin} ${fzf_opts})
+next=$(list_git_projects | ${fzf_bin} ${fzf_opts})
 if [ -z "$next" ]; then
     exit 0
 fi

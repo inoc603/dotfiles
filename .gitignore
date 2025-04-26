@@ -21,6 +21,7 @@ bin/run-alacritty.sh
 bin/tf
 bin/24-bit.sh
 bin/find_git_dir.sh
+bin/env-from-k8s-secret
 
 .asdf/
 .z.lua/

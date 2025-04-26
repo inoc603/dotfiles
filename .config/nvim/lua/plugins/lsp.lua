@@ -213,9 +213,9 @@ return {
                 },
             })
 
-            setup("volar", {
-                filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
-            })
+            -- setup("volar", {
+            --     filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
+            -- })
 
             setup("graphql", {})
 
