@@ -1,126 +1,92 @@
 return {
     {
-        'hrsh7th/nvim-cmp',
-        dependencies = {
-            'hrsh7th/cmp-nvim-lsp',
-            'hrsh7th/cmp-nvim-lsp-signature-help',
-            'hrsh7th/cmp-buffer',
-            'hrsh7th/cmp-path',
-            'hrsh7th/cmp-cmdline',
+        'saghen/blink.compat',
+        -- use the latest release, via version = '*', if you also use the latest release for blink.cmp
+        version = '*',
+        -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
+        lazy = true,
+        -- make sure to set opts so that lazy.nvim calls blink.compat's setup
+        opts = {},
+    },
+    {
+        'saghen/blink.cmp',
+        -- optional: provides snippets for the snippet source
+        dependencies = { 'rafamadriz/friendly-snippets' },
 
-            -- "L3MON4D3/LuaSnip",
-            {
-                "L3MON4D3/LuaSnip",
-                dependencies = { "rafamadriz/friendly-snippets" },
-                config = function()
-                    require("luasnip.loaders.from_vscode").lazy_load()
-                end
-            }
+        -- use a release tag to download pre-built binaries
+        version = '1.*',
+        -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+        -- build = 'cargo build --release',
+        -- If you use nix, you can build from source using latest nightly rust with:
+        -- build = 'nix run .#build-plugin',
+
+        opts = {
+            -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+            -- 'super-tab' for mappings similar to vscode (tab to accept)
+            -- 'enter' for enter to accept
+            -- 'none' for no mappings
+            --
+            -- All presets have the following mappings:
+            -- C-space: Open menu or open docs if already open
+            -- C-n/C-p or Up/Down: Select next/previous item
+            -- C-e: Hide menu
+            -- C-k: Toggle signature help (if signature.enabled = true)
+            --
+            -- See :h blink-cmp-config-keymap for defining your own keymap
+            keymap = {
+                preset = 'enter',
+                ['<Tab>'] = { "select_next", "fallback" },
+                ["<S-Tab>"] = { "select_prev", "fallback" },
+                ['<C-y>'] = { function(cmp) cmp.show() end },
+            },
+
+            appearance = {
+                -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+                -- Adjusts spacing to ensure icons are aligned
+                nerd_font_variant = 'mono'
+            },
+
+            -- (Default) Only show the documentation popup when manually triggered
+            completion = {
+                documentation = { auto_show = true },
+                list = { selection = { preselect = true, auto_insert = true } },
+            },
+
+            -- Default list of enabled providers defined so that you can extend it
+            -- elsewhere in your config, without redefining it, due to `opts_extend`
+            sources = {
+                default = { "avante_commands", "avante_mentions", "avante_files", 'lsp', 'path', 'snippets', 'buffer' },
+                providers = {
+                    avante_commands = {
+                        name = "avante_commands",
+                        module = "blink.compat.source",
+                        score_offset = 90, -- show at a higher priority than lsp
+                        opts = {},
+                    },
+                    avante_files = {
+                        name = "avante_commands",
+                        module = "blink.compat.source",
+                        score_offset = 100, -- show at a higher priority than lsp
+                        opts = {},
+                    },
+                    avante_mentions = {
+                        name = "avante_mentions",
+                        module = "blink.compat.source",
+                        score_offset = 1000, -- show at a higher priority than lsp
+                        opts = {},
+                    },
+                },
+            },
+
+
+
+            -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+            -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+            -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+            --
+            -- See the fuzzy documentation for more information
+            fuzzy = { implementation = "prefer_rust_with_warning" }
         },
-        config = function()
-            local has_words_before = function()
-                unpack = unpack or table.unpack
-                local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-                return col ~= 0 and
-                    vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-            end
-
-            local luasnip = require("luasnip")
-            local cmp = require("cmp")
-
-            -- sumneko_lua will complain about nil check
-            if cmp == nil then
-                return
-            end
-
-            cmp.setup({
-                snippet = {
-                    expand = function(args)
-                        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-                    end,
-                },
-                completion = {
-                    completeopt = "menuone,noinsert,noselect",
-                },
-                window = {
-                    completion = cmp.config.window.bordered({
-                        border = "single",
-                        winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None",
-                    }),
-                    documentation = cmp.config.window.bordered({
-                        border = "single",
-                        winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None",
-                    }),
-                },
-                mapping = cmp.mapping.preset.insert({
-                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-                    ['<C-Space>'] = cmp.mapping.complete(),
-                    ['<C-y>'] = cmp.mapping.complete(),
-                    ['<C-e>'] = cmp.mapping.abort(),
-                    ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
-                    ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
-                    ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
-                    ["<Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_next_item()
-                            -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-                            -- they way you will only jump inside the snippet region
-                        elseif luasnip.expand_or_locally_jumpable() then
-                            luasnip.expand_or_jump()
-                        elseif has_words_before() then
-                            cmp.complete()
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-
-                    ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        elseif luasnip.jumpable(-1) then
-                            luasnip.jump(-1)
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                }),
-                sources = cmp.config.sources({
-                    { name = 'nvim_lsp' },
-                    { name = 'luasnip' },
-                    { name = 'nvim_lsp_signature_help' },
-                }, {
-                    { name = 'buffer' },
-                })
-            })
-
-            -- Set configuration for specific filetype.
-            cmp.setup.filetype('gitcommit', {
-                sources = cmp.config.sources({
-                    { name = 'cmp_git' },
-                }, {
-                    { name = 'buffer' },
-                })
-            })
-
-            -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-            cmp.setup.cmdline('/', {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = {
-                    { name = 'buffer' }
-                }
-            })
-
-            -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-            cmp.setup.cmdline(':', {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = cmp.config.sources({
-                    { name = 'path' }
-                }, {
-                    { name = 'cmdline' }
-                })
-            })
-        end
+        opts_extend = { "sources.default" }
     }
-
 }

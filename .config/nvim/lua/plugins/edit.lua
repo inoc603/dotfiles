@@ -14,7 +14,13 @@ return {
     },
 
     -- Auto pairs parenthesis
-    'jiangmiao/auto-pairs',
+    {
+        'windwp/nvim-autopairs',
+        event = "InsertEnter",
+        config = true
+        -- use opts = {} for passing setup options
+        -- this is equivalent to setup({}) function
+    },
     {
         "folke/flash.nvim",
         event = "VeryLazy",

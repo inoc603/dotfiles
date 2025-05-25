@@ -123,6 +123,10 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "k", function()
     hs.application.launchOrFocus("Slack")
 end)
 
+hs.hotkey.bind({ "cmd", "ctrl" }, ";", function()
+    hs.application.launchOrFocus("Windsurf")
+end)
+
 -- open a new chrome tab and focus on the address bar
 hs.hotkey.bind({ "cmd", "ctrl" }, "o", function()
     if hs.application.launchOrFocus("Google Chrome") then

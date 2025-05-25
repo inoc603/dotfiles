@@ -8,6 +8,9 @@ return {
             -- add any opts here
             -- provider = "copilot"
             provider = "openai",
+            openai = {
+                endpoint = "https://litellmui.ai.gcp-sg.dev.awx.im",
+            },
             auto_suggestions_provider = "copilot",
             mappings = {
                 ask = "<leader>ua",     -- ask

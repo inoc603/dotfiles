@@ -10,7 +10,7 @@ return {
     {
         "folke/trouble.nvim",
         config = function()
-            require("trouble").setup {}
+            require("trouble").setup({})
         end
 
     },
@@ -24,9 +24,9 @@ return {
     {
         'neovim/nvim-lspconfig',
         dependencies = {
-            "jose-elias-alvarez/null-ls.nvim",
-            'hrsh7th/cmp-nvim-lsp',
+            "nvimtools/none-ls.nvim",
             'folke/trouble.nvim',
+            'saghen/blink.cmp',
             'simrat39/symbols-outline.nvim',
         },
         config = function()
@@ -81,11 +81,7 @@ return {
                 vim.keymap.set("n", '<leader><leader>d', trouble.close, opts)
             end
 
-            local lsp = require('lspconfig')
-
-            local capabilities = require('cmp_nvim_lsp').default_capabilities(
-                vim.lsp.protocol.make_client_capabilities()
-            )
+            -- local lsp = require('lspconfig')
 
             local function setup(server, server_opts)
                 if not server_opts.on_attach then
@@ -95,28 +91,17 @@ return {
                     -- this is the default in Nvim 0.7+
                     debounce_text_changes = 150,
                 }
-                if not server_opts.capabilities then
-                    server_opts.capabilities = capabilities
-                end
-                lsp[server].setup(server_opts)
+
+                server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
+                -- lsp[server].setup(server_opts)
+                vim.lsp.config(server, server_opts)
+                vim.lsp.enable(server)
             end
 
             local null_ls = require("null-ls")
             null_ls.setup({
-                sources = {
-                    null_ls.builtins.formatting.prettier,
-                    null_ls.builtins.diagnostics.buf,
-                    null_ls.builtins.formatting.buf,
-                    null_ls.builtins.formatting.sqlfluff.with({
-                        extra_args = { "--dialect", "mysql" }, -- change to your dialect
-                    }),
-                    null_ls.builtins.diagnostics.sqlfluff.with({
-                        extra_args = { "--dialect", "mysql" }, -- change to your dialect
-                    }),
-                },
                 on_attach = on_attach,
             })
-
 
             setup("ts_ls", {
                 on_attach = function(client, bufnr)
@@ -213,50 +198,8 @@ return {
                 },
             })
 
-            -- setup("volar", {
-            --     filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
-            -- })
-
             setup("graphql", {})
 
-            local util = require 'lspconfig.util'
-
-            require("lspconfig.configs").pylance = {
-                default_config = {
-                    cmd = {
-                        'pylance-hack',
-                    },
-                    filetypes = { 'python' },
-                    name = "pylance",
-                    root_dir = function(fname)
-                        return util.root_pattern(unpack({
-                            'pyproject.toml',
-                            'setup.py',
-                            'setup.cfg',
-                            'requirements.txt',
-                            'Pipfile',
-                            'pylanceconfig.json',
-                            '.git',
-                        }))(fname)
-                    end,
-                    single_file_support = true,
-                    settings = {
-                        python = {
-                            analysis = {
-                                autoImportCompletions = true,
-                                -- logLevel = "Trace",
-                                -- exclude = { "**/__pycache__", ".venv", ".git" },
-                                -- useLibraryCodeForTypes = false,
-                                userFileIndexingLimit = -1,
-                            },
-                        },
-                    },
-                },
-            }
-
-            -- disable some hints that complains about unused functions.
-            local pylance_caps = vim.lsp.protocol.make_client_capabilities()
-            pylance_caps.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
 
             setup("basedpyright", {
                 -- capabilities = pylance_caps,
