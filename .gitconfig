@@ -59,11 +59,13 @@ ac = !git add . -A && git commit -m
 wip = !git add . -A && git commit -n -m "wip"
 co = checkout
 cob = checkout -b
+cobt = "!f() { git checkout -b \"$1-$(date +%s)\"; }; f"  
 
 # remove all merged branches
 bclean = !bash ~/.config/git/bclean.sh
 
 tidy = !bash ~/.config/git/tidy.sh
+mt = !git checkout master && git tidy
 
 # clone repository in gopath style
 get = !bash ~/.config/git/get.sh

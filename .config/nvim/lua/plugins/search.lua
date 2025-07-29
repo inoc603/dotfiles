@@ -45,7 +45,9 @@ return {
             n('<leader>p', function()
                 builtin.find_files({ no_ignore = true, hidden = true })
             end)
-            n('<leader>a', builtin.live_grep)
+            n('<leader><leader>a', function()
+                builtin.live_grep({ glob_pattern = '!.git/*' })
+            end)
             n('<leader>fb', builtin.buffers)
             n('<leader>rp', builtin.grep_string)
 

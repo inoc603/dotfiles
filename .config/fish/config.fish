@@ -76,9 +76,6 @@ function zellij_tab_name_update_post --on-event fish_prompt
     end
 end
 
-
-source $HOME/.asdf/asdf.fish
-
 set -g _ZL_CMD j
 lua $HOME/.z.lua/z.lua --init fish | source
 

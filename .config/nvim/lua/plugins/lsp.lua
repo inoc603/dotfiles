@@ -63,6 +63,9 @@ return {
                 -- bring up code actions for the current position
                 vim.keymap.set("n", '<leader>ca', vim.lsp.buf.code_action, opts)
 
+                vim.keymap.set("n", '<leader><leader>i', function()
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ 0 }), { 0 })
+                end)
 
                 local open = function(mode)
                     return function()

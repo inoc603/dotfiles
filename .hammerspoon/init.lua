@@ -124,7 +124,7 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "k", function()
 end)
 
 hs.hotkey.bind({ "cmd", "ctrl" }, ";", function()
-    hs.application.launchOrFocus("Windsurf")
+    hs.application.launchOrFocus("Visual Studio Code")
 end)
 
 -- open a new chrome tab and focus on the address bar
