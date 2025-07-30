@@ -14,3 +14,4 @@ fi
 
 echo $p
 git clone $1 ~/src/$p "${@:2}"
+cd ~/src/$p && git branchless init || echo "git branchless init failed"
