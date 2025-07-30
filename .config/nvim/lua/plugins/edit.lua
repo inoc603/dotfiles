@@ -2,7 +2,11 @@ return {
     'tpope/vim-sensible',
 
     -- More text objects
-    'wellle/targets.vim',
+    {
+        'echasnovski/mini.ai',
+        version = '*',
+        config = function() require("mini.ai").setup() end
+    },
 
     {
         'nathanaelkane/vim-indent-guides',
