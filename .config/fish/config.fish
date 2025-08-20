@@ -107,4 +107,7 @@ set PATH $PATH /Users/inoc/.local/bin
 source ~/.orbstack/shell/init.fish 2>/dev/null || :
 
 # Added by Windsurf
-fish_add_path /Users/eddie.huang/.codeium/windsurf/bin
+fish_add_path ~/.codeium/windsurf/bin
+
+# opencode
+fish_add_path ~/.opencode/bin
