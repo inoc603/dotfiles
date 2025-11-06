@@ -66,6 +66,7 @@ bclean = !bash ~/.config/git/bclean.sh
 
 tidy = !bash ~/.config/git/tidy.sh
 mt = !git checkout master && git tidy
+st = !git sync -p && git tidy
 
 # clone repository in gopath style
 get = !bash ~/.config/git/get.sh

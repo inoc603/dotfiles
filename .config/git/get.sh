@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Check if --shallow flag is provided
+shallow=""
+args=()
+for arg in "${@:2}"; do
+    if [[ "$arg" == "--shallow" ]]; then
+        shallow="--depth 1"
+    else
+        args+=("$arg")
+    fi
+done
+
 p=$(echo $1 | sed -n 's/^https:\/\/\(.*\)\.git$/\1/p')
 if [ -z $p ]
 then
@@ -13,5 +24,5 @@ then
 fi
 
 echo $p
-git clone $1 ~/src/$p "${@:2}"
+git clone $shallow $1 ~/src/$p "${args[@]}"
 cd ~/src/$p && git branchless init || echo "git branchless init failed"

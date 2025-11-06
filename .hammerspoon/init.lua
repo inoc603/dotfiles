@@ -161,7 +161,7 @@ end
 -- move the current window to the next screen
 hs.hotkey.bind({ "ctrl", "cmd", "alt" }, "n", function()
     local window = hs.application.frontmostApplication():focusedWindow()
-    window:moveToScreen(window:screen():next(), false, true, 0)
+    window:moveToScreen(window:screen():next(), true, true, 0)
 end)
 
 -- maximize the current window
