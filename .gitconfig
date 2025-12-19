@@ -94,3 +94,5 @@ path = "~/.gitconfig.local"
 [url "ssh://git@github.com/inoc603"]
 insteadOf = https://github.com/inoc603
 
+[url "git@gitlab.awx.im:"]
+	insteadOf = https://gitlab.awx.im/

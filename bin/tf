@@ -26,6 +26,6 @@ session=$(echo $session | sed 's/\./_/g')
 if [ -z "$TMUX" ]; then
     tmux a -t=$session || tmux new -s $session -c $dir
 else
-    tmux has-session -t "$session" || tmux new-session -s "$session" -d -c $dir 
-    tmux switch-client -t "$session"
+    tmux has-session -t="$session" || tmux new-session -s "$session" -d -c $dir 
+    tmux switch-client -t="$session"
 fi
