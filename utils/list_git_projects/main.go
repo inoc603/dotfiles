@@ -23,7 +23,7 @@ func newSet(items ...string) map[string]struct{} {
 	return res
 }
 
-var blocklist = newSet("node_modules", ".venv", ".env")
+var blocklist = newSet("node_modules", ".venv", ".env", ".worktree")
 
 func main() {
 	home := os.DirFS(must(os.UserHomeDir()))
