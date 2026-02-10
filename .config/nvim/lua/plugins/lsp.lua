@@ -203,7 +203,6 @@ return {
 
             setup("graphql", {})
 
-
             setup("basedpyright", {
                 -- capabilities = pylance_caps,
                 on_attach = function(_, bufnr)

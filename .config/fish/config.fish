@@ -33,6 +33,14 @@ if status is-interactive
     alias g=git
 
     alias v=nvim
+
+    # fuzzy search file and copy path to clipboard
+    alias fp='fzf | xargs -I {} realpath "{}"| pbcopy' 
+
+    alias dp='pwd | pbcopy' 
+
+    alias ccc='claude-chill claude'
+
 end
 
 function safe_source
