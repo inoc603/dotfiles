@@ -91,7 +91,8 @@ lua $HOME/.z.lua/z.lua --init fish | source
 bind \t 'commandline -f complete'
 
 # ctrl-space to toggle search in pager.
-bind nul pager-toggle-search
+# ctrl-space to toggle search in pager. (disabled - needs correct NUL binding)
+# bind \x00 pager-toggle-search
 
 # override fish greeting message to nothing
 function fish_greeting
