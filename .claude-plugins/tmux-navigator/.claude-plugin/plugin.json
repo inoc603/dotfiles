@@ -1,0 +1,8 @@
+{
+  "name": "tmux-navigator",
+  "version": "1.0.0",
+  "description": "Fuzzy search and navigate Claude Code sessions in tmux, grouped by project with git branch info",
+  "author": {
+    "name": "inoc603"
+  }
+}

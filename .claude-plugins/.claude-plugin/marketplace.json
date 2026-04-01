@@ -1,0 +1,17 @@
+{
+  "name": "dotfiles",
+  "owner": {
+    "name": "inoc603"
+  },
+  "plugins": [
+    {
+      "name": "tmux-navigator",
+      "source": "./tmux-navigator",
+      "description": "Fuzzy search and navigate Claude Code sessions in tmux",
+      "version": "1.0.0",
+      "author": {
+        "name": "inoc603"
+      }
+    }
+  ]
+}
