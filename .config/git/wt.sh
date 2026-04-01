@@ -29,7 +29,7 @@ worktree_path="$HOME/src/.worktree/$project_path/$branch"
 
 if [ -d "$worktree_path" ]; then
     echo "Worktree already exists at: $worktree_path"
-    cd "$worktree_path" && exec $SHELL
+    cd "$worktree_path" && exec "${SHELL:-/bin/bash}"
 else
     # Create parent directory if needed
     mkdir -p "$(dirname "$worktree_path")"
@@ -39,13 +39,13 @@ else
         # Branch exists locally, create worktree for it
         git worktree add "$worktree_path" "$branch"
     elif git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
-        # Branch exists on remote, create worktree tracking it
-        git worktree add "$worktree_path" "$branch"
+        # Branch exists on remote, create local tracking branch in worktree
+        git worktree add --track -b "$branch" "$worktree_path" "origin/$branch"
     else
         # Branch doesn't exist, create new branch
         git worktree add -b "$branch" "$worktree_path"
     fi
 
     echo "Created worktree at: $worktree_path"
-    cd "$worktree_path" && exec $SHELL
+    cd "$worktree_path" && exec "${SHELL:-/bin/bash}"
 fi
