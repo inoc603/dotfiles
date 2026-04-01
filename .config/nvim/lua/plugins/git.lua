@@ -12,6 +12,11 @@ return {
         end
     },
     {
+        'sindrets/diffview.nvim',
+        cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFileHistory', 'DiffviewToggleFiles', 'DiffviewFocusFiles' },
+        opts = {},
+    },
+    {
         'akinsho/git-conflict.nvim',
         config = function()
             require('git-conflict').setup({
