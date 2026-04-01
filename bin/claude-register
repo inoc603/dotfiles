@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Add or update a description for the current Claude Code tmux pane.
+# Usage: claude-register <description>
+
+if [ -z "$TMUX" ]; then
+    echo "Not in tmux"
+    exit 1
+fi
+
+desc="$*"
+if [ -z "$desc" ]; then
+    echo "Usage: claude-register <description>"
+    exit 1
+fi
+
+tmux set-option -p @claude_desc "$desc"
+echo "Registered: $desc"

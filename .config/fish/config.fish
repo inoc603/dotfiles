@@ -41,6 +41,18 @@ if status is-interactive
 
     alias ccc='claude-chill claude'
 
+    # Wrap claude to auto-register/unregister tmux pane
+    function claude --wraps=claude
+        if set -q TMUX
+            tmux set-option -p @claude 1
+        end
+        command claude $argv
+        if set -q TMUX
+            tmux set-option -pu @claude
+            tmux set-option -pu @claude_desc
+        end
+    end
+
 end
 
 function safe_source

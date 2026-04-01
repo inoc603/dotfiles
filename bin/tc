@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Fuzzy search Claude Code sessions in tmux, grouped by project.
+
+if [ -z "$TMUX" ]; then
+    fzf_bin="fzf"
+else
+    fzf_bin="fzf-tmux"
+    fzf_opts="-p -w 75% -h 50% --border vertical"
+fi
+
+# Filter matching panes (fast, no git), then resolve git info in parallel
+raw=$(
+    while IFS=$'\t' read -r pane_id pane_path is_claude pane_cmd desc; do
+        [ "$is_claude" != "1" ] && [[ ! "$pane_cmd" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]] && continue
+        (
+            repo_root=$(dirname "$(git -C "$pane_path" rev-parse --path-format=absolute --git-common-dir 2>/dev/null)" 2>/dev/null)
+            project="$(basename "$(dirname "${repo_root:-$pane_path}")")/$(basename "${repo_root:-$pane_path}")"
+            branch=$(git -C "$pane_path" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "-")
+            [ -z "$desc" ] && desc="—"
+            printf '%s\t%s\t%s\t%s\n' "$project" "$desc" "$branch" "$pane_id"
+        ) &
+    done < <(tmux list-panes -a -F $'#{pane_id}\t#{pane_current_path}\t#{?@claude,1,0}\t#{pane_current_command}\t#{?@claude_desc,#{@claude_desc},}')
+    wait
+)
+
+[ -z "$raw" ] && { tmux display-message "No Claude sessions found"; exit 0; }
+
+# Compute max column widths, then format
+selected=$(
+    awk -F'\t' '
+    NR==FNR { if(length($1)>mp) mp=length($1); if(length($2)>md) md=length($2); bl="("$3")"; if(length(bl)>mb) mb=length(bl); next }
+    {
+        printf "\033[33m%-"mp"s\033[0m  %-"md"s  \033[36m(%s)\033[0m\t%s\n", $1, $2, $3, $4
+    }' <(echo "$raw") <(echo "$raw") | sort | \
+    $fzf_bin $fzf_opts --ansi \
+    --delimiter=$'\t' \
+    --with-nth=1 \
+    --header="project / description / branch"
+)
+
+[ -z "$selected" ] && exit 0
+
+pane_id=$(printf '%s' "$selected" | awk -F$'\t' '{print $2}')
+tmux switch-client -t "$pane_id"
