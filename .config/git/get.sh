@@ -16,6 +16,11 @@ if [ -z $p ]
 then
         p=$(echo $1 | sed -n 's/^git@\(.*\)\.git$/\1/p' | sed -e 's/\:/\//g')
 fi
+# Support project web URLs without .git suffix (e.g. https://gitlab.awx.im/devops/productivity/dbm)
+if [ -z $p ]
+then
+        p=$(echo $1 | sed -n 's/^https:\/\/\(.*\)$/\1/p' | sed 's/\/*$//')
+fi
 
 if [ -z $p ]
 then
@@ -24,5 +29,10 @@ then
 fi
 
 echo $p
-git clone $shallow $1 ~/src/$p "${args[@]}"
+url=$1
+# Append .git for web URLs so git clone works
+if [[ "$url" != *.git ]]; then
+        url="${url}.git"
+fi
+git clone $shallow $url ~/src/$p "${args[@]}"
 cd ~/src/$p && git branchless init || echo "git branchless init failed"
