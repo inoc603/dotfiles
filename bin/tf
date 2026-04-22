@@ -27,8 +27,9 @@ fi
 dir=$src/$next
 
 if [ "$key" = "ctrl-y" ]; then
-    printf '%s' "$dir" | pbcopy
-    [ -n "$TMUX" ] && tmux display-message "Copied: $dir"
+    short_dir="~/src/$next"
+    printf '%s' "$short_dir" | pbcopy
+    [ -n "$TMUX" ] && tmux display-message "Copied: $short_dir"
     exit 0
 fi
 
