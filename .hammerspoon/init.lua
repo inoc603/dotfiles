@@ -120,7 +120,42 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "j", function()
 end)
 
 hs.hotkey.bind({ "cmd", "ctrl" }, "k", function()
-    hs.application.launchOrFocus("Slack")
+    local slack = hs.application.get("Slack")
+    if slack then
+        slack:activate()
+        return
+    end
+
+    local injector = os.getenv("HOME")
+        .. "/src/gitlab.awx.im/eddie.huang/roberta/scripts/slack_profile_injector.mjs"
+    local task = hs.task.new("/opt/homebrew/bin/node", function(exitCode, _, stderr)
+        if exitCode ~= 0 then
+            print("[slack-injector] " .. tostring(stderr))
+            hs.alert.show("Slack injector failed; check its log")
+            return
+        end
+
+        local attempts = 0
+        local function focusSlack()
+            local startedSlack = hs.application.get("Slack")
+            if startedSlack then
+                startedSlack:activate()
+                return
+            end
+            attempts = attempts + 1
+            if attempts < 10 then
+                hs.timer.doAfter(0.2, focusSlack)
+            else
+                hs.alert.show("Slack started but could not be focused")
+            end
+        end
+        focusSlack()
+    end, { injector, "ensure" })
+    if task then
+        task:start()
+    else
+        hs.alert.show("Could not start the Slack injector")
+    end
 end)
 
 hs.hotkey.bind({ "cmd", "ctrl" }, ";", function()
