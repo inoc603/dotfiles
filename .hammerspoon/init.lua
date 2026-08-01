@@ -1,6 +1,9 @@
 -- cmd+ctrl+r to reload hammerspoon
 hs.hotkey.bind({ "cmd", "ctrl" }, "r", function() hs.reload() end)
 
+-- enable the `hs` command-line tool / message port (for scripting & AX probing)
+require("hs.ipc")
+
 local alacrittyPrefix = "alacritty-"
 
 local wf = hs.window.filter
@@ -46,7 +49,28 @@ end
 local alacritty = wf.new(false):setAppFilter('Alacritty', { allowTitles = 1 })
 
 -- when alacritty windows is created by hot key, make sure it's in the main screen.
-alacritty:subscribe(wf.windowCreated, moveToMainScreen)
+alacritty:subscribe(wf.windowCreated, function(w)
+    moveToMainScreen(w)
+end)
+
+-- Roberta.app has its own bundle, so it needs a separate window filter.
+local roberta = wf.new(false):setAppFilter('Roberta', {})
+roberta:subscribe(wf.windowCreated, function(w)
+    moveToMainScreen(w)
+    hs.timer.doAfter(0.3, function()
+        local f = w:screen():frame()
+        if w:title() == "roberta-viewer" then
+            -- viewer fills space to the right of the terminal
+            w:setFrame({ x = f.x + f.w * 3 / 4, y = f.y + f.h / 8, w = f.w / 4, h = f.h * 3 / 4 })
+        else
+            -- terminal centered at 1/4 screen
+            w:setFrame({ x = f.x + f.w / 4, y = f.y + f.h / 8, w = f.w / 2, h = f.h * 3 / 4 })
+        end
+    end)
+end)
+roberta:subscribe(wf.windowDestroyed, function(w)
+    appCache[w:title()] = nil
+end)
 
 -- alacritty:subscribe(wf.windowFocused, moveToMainScreen)
 
@@ -100,7 +124,7 @@ end
 -- end)
 
 -- attach to the last used tmux session or create one from home directory if there is none.
-hs.hotkey.bind({ "cmd", "ctrl" }, "l", function()
+hs.hotkey.bind({ "cmd", "ctrl" }, "o", function()
     -- launchAlacritty("local", { "/opt/homebrew/bin/fish", "-i", "-c", "zn" })
     launchAlacritty("local", { "/opt/homebrew/bin/fish", "-i", "-c", "ta" })
 end)
@@ -127,7 +151,7 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "k", function()
     end
 
     local injector = os.getenv("HOME")
-        .. "/src/gitlab.awx.im/eddie.huang/roberta/scripts/slack_profile_injector.mjs"
+        .. "/src/gitlab.awx.im/eddie.huang/slack-enhanced/scripts/slack_profile_injector.mjs"
     local task = hs.task.new("/opt/homebrew/bin/node", function(exitCode, _, stderr)
         if exitCode ~= 0 then
             print("[slack-injector] " .. tostring(stderr))
@@ -159,13 +183,97 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "k", function()
 end)
 
 hs.hotkey.bind({ "cmd", "ctrl" }, ";", function()
-    hs.application.launchOrFocus("Visual Studio Code")
+    -- Find the Roberta terminal window by app, not title (ghostty/tmux may change the title)
+    local robertaApp = hs.application.get('Roberta')
+    local window = nil
+    if robertaApp then
+        for _, w in ipairs(robertaApp:allWindows()) do
+            if w:title() ~= "roberta-viewer" then
+                window = w
+                break
+            end
+        end
+    end
+
+    if window == nil then
+        hs.task.new("/usr/bin/open", nil, {"-a", os.getenv("HOME") .. "/src/gitlab.awx.im/eddie.huang/roberta/Roberta.app", "--args", "--app"}):start()
+    elseif hs.window.focusedWindow() == nil or hs.window.focusedWindow():id() ~= window:id() then
+        if robertaApp then robertaApp:activate() end
+        window:focus()
+    else
+        -- toggle between centered 1/4 and fullscreen
+        local f = window:screen():frame()
+        if window:size().w < f.w * 0.9 then
+            window:maximize()
+        else
+            window:setFrame({ x = f.x + f.w / 4, y = f.y + f.h / 8, w = f.w / 2, h = f.h * 3 / 4 })
+        end
+    end
 end)
 
--- open a new chrome tab and focus on the address bar
-hs.hotkey.bind({ "cmd", "ctrl" }, "o", function()
-    if hs.application.launchOrFocus("Google Chrome") then
-        hs.application.get("Google Chrome"):selectMenuItem({ "文件", "新标签页" })
+-- focus the next unread Roberta notification's tmux pane
+hs.hotkey.bind({ "cmd", "ctrl" }, "n", function()
+    print("[roberta-hotkey] cmd+ctrl+n pressed")
+    hs.task.new(os.getenv("HOME") .. "/src/gitlab.awx.im/eddie.huang/roberta/Roberta.app/Contents/MacOS/roberta",
+        function(exitCode, stdout, stderr)
+            print("[roberta-hotkey] exit=" .. tostring(exitCode) .. " stdout=" .. tostring(stdout) .. " stderr=" .. tostring(stderr))
+            if exitCode ~= 0 then return end
+            local ok, resp = pcall(hs.json.decode, stdout)
+            if not ok or not resp or not resp.ok then
+                print("[roberta-hotkey] no notification to focus")
+                return
+            end
+            local session = resp.session or ""
+            local isRoberta = session == "" or session:find("^roberta")
+            print("[roberta-hotkey] isRoberta=" .. tostring(isRoberta) .. " session=" .. session)
+            -- Daemon already selected the tmux pane; we just need to focus the window.
+            if isRoberta then
+                local robertaApp = hs.application.get('Roberta')
+                if robertaApp then robertaApp:activate() end
+                local w = nil
+                if robertaApp then
+                    for _, win in ipairs(robertaApp:allWindows()) do
+                        if win:title() ~= "roberta-viewer" then w = win; break end
+                    end
+                end
+                print("[roberta-hotkey] roberta window=" .. tostring(w and w:title() or "nil"))
+                if w then w:focus() end
+            else
+                local app = hs.application.get("com.mitchellh.ghostty")
+                print("[roberta-hotkey] ghostty app=" .. tostring(app))
+                if app then
+                    app:activate()
+                    local w = app:mainWindow()
+                    if w then w:focus() end
+                end
+            end
+        end, {"--focus-next"}):start()
+end)
+
+-- launch or focus Ghostty (single-window tmux workflow, same as Alacritty)
+hs.hotkey.bind({ "cmd", "ctrl" }, "l", function()
+    local app = hs.application.get("com.mitchellh.ghostty")
+    local window = nil
+    if app then
+        window = app:mainWindow()
+    end
+
+    if window == nil then
+        hs.task.new("/usr/bin/open", nil,
+            {"-a", "Ghostty", "--args", "-e", "/opt/homebrew/bin/fish", "-i", "-c", "ta"}):start()
+    elseif hs.window.focusedWindow() == nil
+        or hs.window.focusedWindow():id() ~= window:id()
+    then
+        app:activate()
+        window:focus()
+    else
+        local wf = window:frame()
+        local sf = window:screen():frame()
+        if wf.w < sf.w or wf.h < sf.h then
+            window:maximize()
+        else
+            moveToMainScreen(window)
+        end
     end
 end)
 
@@ -203,5 +311,11 @@ end)
 hs.hotkey.bind({ "ctrl", "cmd", "alt" }, "m", function()
     hs.window.focusedWindow():maximize()
 end)
+
+-- polish: rephrase the draft in the focused input (cmd+ctrl+p). Tool lives in the roberta repo.
+local polishPath = os.getenv("HOME") .. "/src/gitlab.awx.im/eddie.huang/roberta/polish/hs.lua"
+if hs.fs.attributes(polishPath) then
+    dofile(polishPath).bind({ "cmd", "ctrl" }, "p")
+end
 
 hs.alert.show("Hammerspoon Loaded")

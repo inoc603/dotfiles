@@ -5,6 +5,7 @@ email = inoc603@gmail.com
 [core]
 editor = nvim
 pager = delta
+sshCommand = ssh -o LogLevel=ERROR
 
 [interactive]
 diffFilter = delta --color-only

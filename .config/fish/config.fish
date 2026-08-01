@@ -66,25 +66,6 @@ function ta
 	tmux a || tn
 end
 
-function zn
-    set session (basename (pwd))
-    zellij a -c $session
-end
-
-function zellij_tab_name_update_pre --on-event fish_preexec
-    if set -q ZELLIJ
-        set title (string split ' ' $argv)[1]
-        command nohup zellij action rename-tab $title >/dev/null 2>&1
-    end
-end
-
-function zellij_tab_name_update_post --on-event fish_prompt
-    if set -q ZELLIJ
-        set title "fish"
-        command nohup zellij action rename-tab $title >/dev/null 2>&1
-    end
-end
-
 set -g _ZL_CMD j
 lua $HOME/.z.lua/z.lua --init fish | source
 
@@ -121,3 +102,6 @@ fish_add_path ~/.codeium/windsurf/bin
 
 # opencode
 fish_add_path ~/.opencode/bin
+
+# Android SDK platform-tools (adb, fastboot)
+fish_add_path /opt/homebrew/share/android-commandlinetools/platform-tools
