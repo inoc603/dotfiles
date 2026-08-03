@@ -66,7 +66,7 @@ cobt = "!f() { git checkout -b \"$1-$(date +%s)\"; }; f"
 bclean = !bash ~/.config/git/bclean.sh
 
 tidy = !bash ~/.config/git/tidy.sh
-mt = !git checkout master && git tidy
+mt = "!f() { b=$(git rev-parse --abbrev-ref origin/HEAD 2>/dev/null || (git remote set-head origin -a >/dev/null 2>&1 && git rev-parse --abbrev-ref origin/HEAD) || echo master); git checkout \"${b#origin/}\" && git tidy; }; f"
 st = !git sync -p && git tidy
 
 # clone repository in gopath style
