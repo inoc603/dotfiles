@@ -29,8 +29,14 @@ function kalias \
 end
 
 function kubeconfig \
-    -d "select and set kubeconfig for the shell session"
+    -d "select a cluster for this shell session (one kubeconfig file per cluster)"
 
-    set -l kubeconfig (ls $HOME/.kube/config* | fzf)
+    # ~/.kube/config is the scratch file for local clusters (kind, orbstack).
+    # Long-lived clusters live in one file per cluster under ~/.kube/clusters/.
+    set -l files $HOME/.kube/config
+    for f in $HOME/.kube/clusters/*.yaml
+        set -a files $f
+    end
+    set -l kubeconfig (printf '%s\n' $files | fzf --delimiter=/ --with-nth=-1)
     test -n "$kubeconfig" && set -gx KUBECONFIG $kubeconfig
 end
