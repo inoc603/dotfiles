@@ -16,22 +16,18 @@ git remote prune origin
 
 # Clean up worktrees for merged branches before deleting them
 git_root=$(git rev-parse --show-toplevel)
-project_path="${git_root#$HOME/src/}"
-if [ "$project_path" != "$git_root" ]; then
-    worktree_base="$HOME/src/.worktree/$project_path"
-    for branch in $(git branch --merged "$remote_main_branch" | grep -v "$local_main_brach" | sed 's/^[* ]*//'); do
-        worktree_path="$worktree_base/$branch"
-        if [ -d "$worktree_path" ]; then
-            # Check if worktree has uncommitted changes
-            if git -C "$worktree_path" diff --quiet && git -C "$worktree_path" diff --cached --quiet; then
-                echo "Removing worktree for merged branch: $branch"
-                git worktree remove "$worktree_path"
-            else
-                echo "Skipping worktree for $branch: has uncommitted changes"
-            fi
+for branch in $(git branch --format='%(refname:short)' --merged "$remote_main_branch" | grep -v "$local_main_brach"); do
+    worktree_path=$(git worktree list --porcelain | awk -v b="refs/heads/$branch" '$1 == "worktree" { wt = $2 } $1 == "branch" && $2 == b { print wt }')
+    if [ -n "$worktree_path" ] && [ "$worktree_path" != "$git_root" ]; then
+        # Check if worktree has uncommitted changes
+        if git -C "$worktree_path" diff --quiet && git -C "$worktree_path" diff --cached --quiet; then
+            echo "Removing worktree for merged branch: $branch"
+            git worktree remove "$worktree_path"
+        else
+            echo "Skipping worktree for $branch: has uncommitted changes"
         fi
-    done
-fi
+    fi
+done
 
 bash ~/.config/git/bclean.sh
 
