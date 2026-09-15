@@ -151,7 +151,7 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "k", function()
     end
 
     local injector = os.getenv("HOME")
-        .. "/src/gitlab.awx.im/eddie.huang/slack-enhanced/scripts/slack_profile_injector.mjs"
+        .. "/src/gitlab.awx.im/eddie.huang/laptop-tools/slack-enhanced/scripts/slack_profile_injector.mjs"
     local task = hs.task.new("/opt/homebrew/bin/node", function(exitCode, _, stderr)
         if exitCode ~= 0 then
             print("[slack-injector] " .. tostring(stderr))
