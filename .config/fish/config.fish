@@ -26,7 +26,8 @@ if status is-interactive
     # ctrl-i to go to the next directory in directory history
     bind \ci nextd-or-forward-word
 
-    alias k=kubectl
+    # `k` is now a function in fish/functions/k.fish: `k -c <cluster> ...` goes
+    # through aid-kubeconfig's cluster configs, everything else is kubectl.
 
     alias lg=lazygit
 
