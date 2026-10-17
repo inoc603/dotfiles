@@ -32,3 +32,9 @@ bin/env-from-k8s-secret
 .z.lua/
 
 .DS_Store
+
+# Edi: track generic prompts and skills only; airwallex/, config, and runtime stay local.
+/.edi/*
+!/.edi/system_prompt.md
+!/.edi/prompts/
+!/.edi/skills/

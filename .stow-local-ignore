@@ -7,3 +7,4 @@ macos
 .gitignore
 .dockerignore
 debian
+^/\.edi$
