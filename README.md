@@ -22,13 +22,25 @@ For vim configuration, see [this repo](https://github.com/inoc603/my-vim).
 
 ## Edi
 
-`.edi/system_prompt.md`, `.edi/prompts/`, and `.edi/skills/` contain generic Edi instructions.
-Edit them here, then run `make edi` to install copies into `~/.edi`; `make link` also runs this target.
-Back up existing instructions before installing. Edi requires included prompts to stay within `~/.edi`,
-so Stow skips `.edi` and the installer uses real files instead of symlinks.
+`.edi/` is a resource bundle containing generic prompts and skills. Edi loads it directly;
+Stow skips it, and `make link` does not copy instructions into `~/.edi`.
+Use an Edi version with `resource_bundles` support. Add this ordered list to `~/.edi/config.yaml`:
 
-Work-specific instructions live in ignored `.edi/airwallex/`, with `prompts/`, `skills/`, and a
-`system_prompt.md` that includes generic and work prompts relative to `~/.edi`.
-When present, the installer copies work prompts into `~/.edi/airwallex/`, adds work skills to
-`~/.edi/skills/`, and installs the work system prompt. These files are not distributed with this repository.
-Local configuration, credentials, sessions, sockets, and other runtime data remain outside this repository.
+```yaml
+resource_bundles:
+  - ~/src/github.com/inoc603/dotfiles/.edi
+  - ~/src/github.com/inoc603/dotfiles/.edi/airwallex
+```
+
+Adjust the repository path for your checkout. Include the second root only if it exists;
+explicitly configured missing roots are errors. Work-specific content belongs in ignored
+`.edi/airwallex/`, with its own `system_prompt.md`, `prompts/`, and `skills/`.
+Its system prompt includes only work prompts, relative to that root; the first bundle supplies generic prompts.
+Work files are not distributed with this repository. Paths may be absolute, start with `~/`,
+or be relative to `~/.edi`. Bundle includes must remain inside their containing directory.
+
+Edit instructions in these roots; no installation copy is needed. Later bundles override earlier skills
+with the same name, and legacy global/project skills can override bundle skills.
+When migrating from the copying installer, back up and remove the old installed system prompt and
+skills in `~/.edi` to avoid duplicate prompts or stale skill overrides. Keep configuration and runtime data.
+Verify the effective prompt with `edi config prompt --stats`.
