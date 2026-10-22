@@ -4,8 +4,6 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "r", function() hs.reload() end)
 -- enable the `hs` command-line tool / message port (for scripting & AX probing)
 require("hs.ipc")
 
-local alacrittyPrefix = "alacritty-"
-
 local wf = hs.window.filter
 
 local function possibleMainScreen()
@@ -41,14 +39,9 @@ end
 
 local appCache = {}
 
-local function cleanAppCache(w)
-    local title = alacrittyPrefix .. w:title()
-    appCache[title] = nil
-end
-
 local alacritty = wf.new(false):setAppFilter('Alacritty', { allowTitles = 1 })
 
--- when alacritty windows is created by hot key, make sure it's in the main screen.
+-- Move new Alacritty windows to the main screen.
 alacritty:subscribe(wf.windowCreated, function(w)
     moveToMainScreen(w)
 end)
@@ -73,61 +66,6 @@ roberta:subscribe(wf.windowDestroyed, function(w)
 end)
 
 -- alacritty:subscribe(wf.windowFocused, moveToMainScreen)
-
-alacritty:subscribe(wf.windowDestroyed, cleanAppCache)
-
-local function launchAlacritty(title, commands)
-    title = alacrittyPrefix .. title
-
-    local window = appCache[title]
-
-    if window == nil or window:application() == nil then
-        window = hs.window.get(title)
-        appCache[title] = window
-    end
-
-    if window == nil then
-        local params = {
-            "-t", title, "--config-file", os.getenv("HOME") .. "/.alacritty.toml"
-        }
-        if commands then
-            table.insert(params, "-e")
-            for _, v in ipairs(commands) do table.insert(params, v) end
-        end
-
-        hs.task.new(os.getenv("HOME") .. "/bin/run-alacritty.sh", nil, params):start()
-    else
-        -- try to focus the window first.
-        if hs.window.focusedWindow() == nil
-            or hs.window.focusedWindow():id() ~= window:id()
-        then
-            window:focus()
-            return
-        end
-
-        -- if the window is already focused, try to maximize it.
-        if window:screen():frame().w ~= window:size().w
-            or window:screen():frame().h ~= window:size().h
-        then
-            window:maximize()
-            return
-        end
-
-        -- if the window is already maximized, try to move it to main screen.
-        moveToMainScreen(window)
-    end
-end
-
--- ssh to devbox and attach to the last used tmux session.
--- hs.hotkey.bind({ "cmd", "ctrl" }, "k", function()
---     launchAlacritty("remote", { "ssh", "t" })
--- end)
-
--- attach to the last used tmux session or create one from home directory if there is none.
-hs.hotkey.bind({ "cmd", "ctrl" }, "o", function()
-    -- launchAlacritty("local", { "/opt/homebrew/bin/fish", "-i", "-c", "zn" })
-    launchAlacritty("local", { "/opt/homebrew/bin/fish", "-i", "-c", "ta" })
-end)
 
 hs.hotkey.bind({ "cmd", "ctrl" }, "i", function()
     hs.application.launchOrFocus("Google Chrome")
