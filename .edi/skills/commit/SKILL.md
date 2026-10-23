@@ -7,9 +7,10 @@ description: Stage and commit current change with proper commit message
 
 Run the context script bundled with this skill to understand the current state:
 
-```bash
-bash scripts/context.sh
-```
+- macOS/Linux: `bash scripts/context.sh`
+- Windows (PowerShell): `pwsh -NoProfile -File scripts/context.ps1`
+
+If neither shell is available, gather the same information with the `git` commands directly.
 
 ## Step 2: Stage and commit
 
